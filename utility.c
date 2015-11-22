@@ -23,16 +23,21 @@ void OpenImageFile(const char* name)
 	}	
 }
 
+void CloseImageFile()
+{
+	if (ImageFile != NULL)
+		fclose(ImageFile);
+}
+
 void ParseBootSector(void)
 {
-	unsigned short store_bytes[4];
-
+    unsigned short store_bytes[4];
+    char SPC[1];
     fseek(ImageFile, 11, SEEK_SET);
 	fread(store_bytes, sizeof(char), 2, ImageFile);		
 	BPB_BytesPerSector = store_bytes[0];
 	printf("BytesPSec: %i\n", BPB_BytesPerSector);
 
-    char SPC[1];
     fseek(ImageFile, 13, SEEK_SET);
     fread(SPC, sizeof(char), 1, ImageFile);
     BPB_SecPerClus = SPC[0];
