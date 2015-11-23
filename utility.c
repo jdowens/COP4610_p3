@@ -3,6 +3,8 @@
 unsigned int SectorNumber = 0;
 FILE* ImageFile = NULL;
 
+const int ENDOFCLUSTER = 268435448;
+
 // boot sector
 short BPB_BytesPerSector;
 short BPB_SecPerClus;
@@ -90,3 +92,17 @@ void FindRootDirectory(void)
 
     printf("Sector Number of Root Directory: %i\n", RootDirLocation);
 }
+
+// NOTES:
+// 
+// FATOffset = N * 4
+// e.g for root N = RootClus where RootClus = 2, so FATOffset = 8
+//
+// ThisFATSecNum = BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSec)
+// ThisFATEntOffset = REM(FATOffset / BPB_BytesPerSec)
+// 
+// For RootDirectory we calculate ThisFATSecNum to be 32. 32 * BytesPerSector = 16384 = 4000 in hex
+// So our RootDirectory starts in 4000.
+//
+
+
