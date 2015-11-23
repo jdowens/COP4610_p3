@@ -7,7 +7,7 @@ void OpenImageFile(const char* name);
 void CloseImageFile();
 FILE* GetImageFile();
 
-void SetCurrentSectorNum(int num);
+void SetCurrentSectorNum(unsigned int num);
 int GetCurrentSectorNum();
 
 void ParseBootSector(void);
