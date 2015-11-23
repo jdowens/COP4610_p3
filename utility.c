@@ -82,14 +82,11 @@ void ParseBootSector(void)
 
 void FindRootDirectory(void)
 {
-    short FirstDataSector = BPB_RsvdSecCnt + (BPB_NumFats * BPB_FATSz32);
+    int FirstDataSector = BPB_RsvdSecCnt + (BPB_NumFats * BPB_FATSz32);
 
-    short FirstSectorofCluster = ((BPB_RootClus - 2) * BPB_SecPerClus) + FirstDataSector;
+    int FirstSectorofCluster = ((BPB_RootClus - 2) * BPB_SecPerClus) + FirstDataSector;
 
-    printf("Sector Number of Root Directory: %i\n", FirstSectorofCluster);
+    int RootDirLocation = FirstSectorofCluster * BPB_BytesPerSector;
+
+    printf("Sector Number of Root Directory: %i\n", RootDirLocation);
 }
-
-// utility function to convert cstring to short(int)
-//short StrToShort(char * cstr)
-//{
-//}
