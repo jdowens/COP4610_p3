@@ -1,6 +1,6 @@
 #include "utility.h"
 
-
+unsigned int SectorNumber = 0;
 FILE* ImageFile = NULL;
 
 // boot sector
@@ -27,6 +27,21 @@ void CloseImageFile()
 {
 	if (ImageFile != NULL)
 		fclose(ImageFile);
+}
+
+FILE* GetImageFile()
+{
+	return ImageFile;
+}
+
+void SetCurrentSectorNum(unsigned int num)
+{
+	SectorNumber = num;
+}
+
+unsigned int GetCurrentSectorNum()
+{
+	return SectorNumber;
 }
 
 void ParseBootSector(void)
