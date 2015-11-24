@@ -20,8 +20,6 @@ void ParseBootSector(void);
 
 void FindRootDirectory(void);
 
-unsigned int next_cluster(int);
-
 unsigned int little_to_big(unsigned char*, int);
 
 #endif

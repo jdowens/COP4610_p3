@@ -47,3 +47,16 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 		
 	}
 }
+
+
+int next_cluster(int current_cluster){
+        int temp1=0;
+        //the start of the fat table is 4000
+        //CHANGE THE HARD CODED NUMBER
+        int temp2 = 4000 + current_cluster;
+        fseek(ImageFIle,temp2,SEEK_SET);
+        fread(temp1,sizeof(char),1,ImageFile);
+        return temp1;
+}
+
+

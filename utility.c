@@ -122,17 +122,6 @@ void FindFATTable(int N)
 //{
 //}
 
-/*
-int next_cluster(int current_cluster){
-	int temp1=0;
-	//the start of the fat table is 4000
-	//CHANGE THE HARD CODED NUMBER
-	int temp2 = 4000 + current_cluster;
-	fseek(ImageFIle,temp2,SEEK_SET);
-	fread(temp1,sizeof(char),1,ImageFile);
-	return temp1;
-}*/
-
 unsigned int little_to_big(unsigned char *array, int bytes){
 	unsigned int ret = 0;
 	int i;
