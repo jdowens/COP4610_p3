@@ -10,4 +10,8 @@ void ParseBootSector(void);
 
 void FindRootDirectory(void);
 
+unsinged int next_cluster(int);
+
+unsigned int little_to_bit(char*, int);
+
 #endif

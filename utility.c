@@ -78,3 +78,24 @@ void FindRootDirectory(void)
 //short StrToShort(char * cstr)
 //{
 //}
+
+/*
+int next_cluster(int current_cluster){
+	int temp1=0;
+	//the start of the fat table is 4000
+	//CHANGE THE HARD CODED NUMBER
+	int temp2 = 4000 + current_cluster;
+	fseek(ImageFIle,temp2,SEEK_SET);
+	fread(temp1,sizeof(char),1,ImageFile);
+	return temp1;
+}*/
+
+unsigned int little_to_big(char *array, int bytes){
+	unsigned short array[4];
+	unsigned int ret = 0;
+	for(int i = 0; i < bytes; i++)
+	{
+		ret += array[i]<<(i*8);
+	}
+	return ret;
+}
