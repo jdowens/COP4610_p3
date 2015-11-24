@@ -117,7 +117,6 @@ void FindFATTable(int N)
     
 }
 
-<<<<<<< HEAD
 // utility function to convert cstring to short(int)
 //short StrToShort(char * cstr)
 //{
@@ -143,7 +142,7 @@ unsigned int little_to_big(char *array, int bytes){
 	}
 	return ret;
 }
-=======
+
 // NOTES:
 // 
 // FATOffset = N * 4
@@ -157,4 +156,3 @@ unsigned int little_to_big(char *array, int bytes){
 //
 
 
->>>>>>> 23537b2719b0b3698994eabe5f68275f0da79962
