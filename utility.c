@@ -38,7 +38,7 @@ FILE* GetImageFile()
 
 short GetBytesPerSec(void)
 {
-    return BPB_BytesPerSec;
+    return BPB_BytesPerSector;
 }
 
 short GetSecPerClus(void)
@@ -108,12 +108,12 @@ void FindFATTable(int N)
 {
     int FATOffset = N * 4;
 
-    int ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSec);
+    int ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSector);
     int ThisFATEntOffset = 0;
 
 
     //if (N > BPB_RootClus)
-    ThisFATEntOffset = FATOffset % BPB_BytesPerSec;   
+    ThisFATEntOffset = FATOffset % BPB_BytesPerSector;   
     
 }
 
@@ -134,11 +134,11 @@ int next_cluster(int current_cluster){
 }*/
 
 unsigned int little_to_big(char *array, int bytes){
-	unsigned short array[4];
 	unsigned int ret = 0;
-	for(int i = 0; i < bytes; i++)
+	int i;
+	for(i = 0; i < bytes; i++)
 	{
-		ret += array[i]<<(i*8);
+		ret += (unsigned int)(array[i])<<(i*8);
 	}
 	return ret;
 }
