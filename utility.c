@@ -59,7 +59,7 @@ unsigned int GetCurrentSectorNum()
 void ParseBootSector(void)
 {
     unsigned short store_bytes[4];
-    char SPC[1];
+    unsigned char SPC[1];
     fseek(ImageFile, 11, SEEK_SET);
 	fread(store_bytes, sizeof(char), 2, ImageFile);		
 	BPB_BytesPerSector = store_bytes[0];
@@ -67,28 +67,28 @@ void ParseBootSector(void)
 
     fseek(ImageFile, 13, SEEK_SET);
     fread(SPC, sizeof(char), 1, ImageFile);
-    BPB_SecPerClus = SPC[0];
+    BPB_SecPerClus = little_to_big(SPC, 1);
     printf("SPC: %i\n", BPB_SecPerClus);
 
     fseek(ImageFile, 14, SEEK_SET);
     fread(store_bytes, sizeof(char), 2, ImageFile);
-    BPB_RsvdSecCnt = store_bytes[0];
+    BPB_RsvdSecCnt = little_to_big(store_bytes, 2);
     printf("RsvdSecCnt = %i\n", BPB_RsvdSecCnt);
 
     fseek(ImageFile, 16, SEEK_SET);
     fread(store_bytes, sizeof(char), 1, ImageFile);
-    BPB_NumFats = store_bytes[0];
+    BPB_NumFats = little_to_big(store_bytes, 1);
     printf("NumFats = %i\n", BPB_NumFats);
 
     fseek(ImageFile, 36, SEEK_SET);
     fread(store_bytes, sizeof(char), 4, ImageFile);
-    BPB_FATSz32 = store_bytes[0];
+    BPB_FATSz32 = little_to_big(store_bytes, 4);
     printf("FATSz32 = %i\n", BPB_FATSz32);
     
     // root clus
     fseek(ImageFile, 44, SEEK_SET);
     fread(store_bytes, sizeof(char), 4, ImageFile);
-    BPB_RootClus = store_bytes[0];
+    BPB_RootClus = little_to_big(store_bytes, 4);
     printf("RootClus = %i\n", BPB_RootClus);
 
     FindFirstSectorOfCluster(BPB_RootClus);
@@ -133,7 +133,7 @@ int next_cluster(int current_cluster){
 	return temp1;
 }*/
 
-unsigned int little_to_big(char *array, int bytes){
+unsigned int little_to_big(unsigned char *array, int bytes){
 	unsigned int ret = 0;
 	int i;
 	for(i = 0; i < bytes; i++)

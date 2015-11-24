@@ -22,6 +22,6 @@ void FindRootDirectory(void);
 
 unsigned int next_cluster(int);
 
-unsigned int little_to_bit(char*, int);
+unsigned int little_to_big(unsigned char*, int);
 
 #endif
