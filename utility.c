@@ -100,7 +100,7 @@ int FindFirstSectorOfCluster(int N)
     int FirstSectorofCluster = ((N - 2) * BPB_SecPerClus) + FirstDataSector;
     int DirLocation = FirstSectorofCluster * BPB_BytesPerSector;
     
-    printf("Sector Number of Root Directory: %i\n", DirLocation);
+    printf("Byte address of Current Cluster: %x\n", DirLocation);
     return DirLocation;
 }
 
@@ -121,6 +121,11 @@ void FindFATTable(int N)
 //short StrToShort(char * cstr)
 //{
 //}
+
+unsigned int FAT_Start(){
+	return 0x4000;
+}
+
 
 unsigned int little_to_big(unsigned char *array, int bytes){
 	unsigned int ret = 0;

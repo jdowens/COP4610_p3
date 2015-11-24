@@ -1,6 +1,7 @@
 #include "directoryparse.h"
+#include "utility.h"
 
-struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
+/*struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 {
 	FILE* inFile = GetImageFile();
 
@@ -47,16 +48,25 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 		
 	}
 }
+*/
 
+unsigned int next_cluster(unsigned int current_cluster){
+	unsigned char temp1[4];
+      	FILE* ImageFile= GetImageFile();
+	
 
-int next_cluster(int current_cluster){
-        int temp1=0;
-        //the start of the fat table is 4000
+	//the start of the fat table is 4000
         //CHANGE THE HARD CODED NUMBER
-        int temp2 = 4000 + current_cluster;
-        fseek(ImageFIle,temp2,SEEK_SET);
-        fread(temp1,sizeof(char),1,ImageFile);
-        return temp1;
+        unsigned int temp = FAT_Start() + current_cluster*4;
+        printf("Temp:%d \n",temp);
+
+	
+	fseek(ImageFile,temp,SEEK_SET);
+        fread(temp1,sizeof(unsigned char),4,ImageFile);
+
+        return little_to_big(temp1,4);
 }
 
-
+void TestNextCluster(){
+	printf("HERE: %x \n",next_cluster(2));
+}

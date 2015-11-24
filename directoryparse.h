@@ -13,5 +13,7 @@ struct DirectoryEntry
 struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum);
 struct DirectoryEntry* DirectoryVectorPushBack(struct DirectoryEntry* vec, struct DirectoryEntry* file);
 
-unsigned int next_cluster();
+unsigned int next_cluster(unsigned int);
+void TestNextCluster();
+
 #endif

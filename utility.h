@@ -22,4 +22,6 @@ void FindRootDirectory(void);
 
 unsigned int little_to_big(unsigned char*, int);
 
+unsigned int FAT_Start();
+
 #endif
