@@ -1,7 +1,9 @@
 #include "utility.h"
 
-
+unsigned int SectorNumber = 0;
 FILE* ImageFile = NULL;
+
+const int ENDOFCLUSTER = 268435448;
 
 // boot sector
 short BPB_BytesPerSector;
@@ -29,6 +31,31 @@ void CloseImageFile()
 		fclose(ImageFile);
 }
 
+FILE* GetImageFile()
+{
+	return ImageFile;
+}
+
+short GetBytesPerSec(void)
+{
+    return BPB_BytesPerSec;
+}
+
+short GetSecPerClus(void)
+{
+    return BPB_SecPerClus;
+}
+
+/*void SetCurrentSectorNum(unsigned int num)
+{
+	SectorNumber = num;
+}
+
+unsigned int GetCurrentSectorNum()
+{
+	return SectorNumber;
+}
+*/
 void ParseBootSector(void)
 {
     unsigned short store_bytes[4];
@@ -63,17 +90,34 @@ void ParseBootSector(void)
     fread(store_bytes, sizeof(char), 4, ImageFile);
     BPB_RootClus = store_bytes[0];
     printf("RootClus = %i\n", BPB_RootClus);
+
+    FindFirstSectorOfCluster(BPB_RootClus);
 }
 
-void FindRootDirectory(void)
+int FindFirstSectorOfCluster(int N)
 {
-    short FirstDataSector = BPB_RsvdSecCnt + (BPB_NumFats * BPB_FATSz32);
-
-    short FirstSectorofCluster = ((BPB_RootClus - 2) * BPB_SecPerClus) + FirstDataSector;
-
-    printf("Sector Number of Root Directory: %i\n", FirstSectorofCluster);
+    int FirstDataSector = BPB_RsvdSecCnt + (BPB_NumFats * BPB_FATSz32);
+    int FirstSectorofCluster = ((N - 2) * BPB_SecPerClus) + FirstDataSector;
+    int DirLocation = FirstSectorofCluster * BPB_BytesPerSector;
+    
+    printf("Sector Number of Root Directory: %i\n", DirLocation);
+    return DirLocation;
 }
 
+void FindFATTable(int N)
+{
+    int FATOffset = N * 4;
+
+    int ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSec);
+    int ThisFATEntOffset = 0;
+
+
+    //if (N > BPB_RootClus)
+    ThisFATEntOffset = FATOffset % BPB_BytesPerSec;   
+    
+}
+
+<<<<<<< HEAD
 // utility function to convert cstring to short(int)
 //short StrToShort(char * cstr)
 //{
@@ -99,3 +143,18 @@ unsigned int little_to_big(char *array, int bytes){
 	}
 	return ret;
 }
+=======
+// NOTES:
+// 
+// FATOffset = N * 4
+// e.g for root N = RootClus where RootClus = 2, so FATOffset = 8
+//
+// ThisFATSecNum = BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSec)
+// ThisFATEntOffset = REM(FATOffset / BPB_BytesPerSec)
+// 
+// For RootDirectory we calculate ThisFATSecNum to be 32. 32 * BytesPerSector = 16384 = 4000 in hex
+// So FAT table starts at 4000.
+//
+
+
+>>>>>>> 23537b2719b0b3698994eabe5f68275f0da79962
