@@ -102,7 +102,7 @@ void FindRootDirectory(void)
 // ThisFATEntOffset = REM(FATOffset / BPB_BytesPerSec)
 // 
 // For RootDirectory we calculate ThisFATSecNum to be 32. 32 * BytesPerSector = 16384 = 4000 in hex
-// So our RootDirectory starts in 4000.
+// So FAT table starts at 4000.
 //
 
 
