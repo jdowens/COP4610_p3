@@ -36,7 +36,17 @@ FILE* GetImageFile()
 	return ImageFile;
 }
 
-void SetCurrentSectorNum(unsigned int num)
+short GetBytesPerSec(void)
+{
+    return BPB_BytesPerSec;
+}
+
+short GetSecPerClus(void)
+{
+    return BPB_SecPerClus;
+}
+
+/*void SetCurrentSectorNum(unsigned int num)
 {
 	SectorNumber = num;
 }
@@ -45,7 +55,7 @@ unsigned int GetCurrentSectorNum()
 {
 	return SectorNumber;
 }
-
+*/
 void ParseBootSector(void)
 {
     unsigned short store_bytes[4];
@@ -80,17 +90,31 @@ void ParseBootSector(void)
     fread(store_bytes, sizeof(char), 4, ImageFile);
     BPB_RootClus = store_bytes[0];
     printf("RootClus = %i\n", BPB_RootClus);
+
+    FindFirstSectorOfCluster(BPB_RootClus);
 }
 
-void FindRootDirectory(void)
+int FindFirstSectorOfCluster(int N)
 {
     int FirstDataSector = BPB_RsvdSecCnt + (BPB_NumFats * BPB_FATSz32);
+    int FirstSectorofCluster = ((N - 2) * BPB_SecPerClus) + FirstDataSector;
+    int DirLocation = FirstSectorofCluster * BPB_BytesPerSector;
+    
+    printf("Sector Number of Root Directory: %i\n", DirLocation);
+    return DirLocation;
+}
 
-    int FirstSectorofCluster = ((BPB_RootClus - 2) * BPB_SecPerClus) + FirstDataSector;
+void FindFATTable(int N)
+{
+    int FATOffset = N * 4;
 
-    int RootDirLocation = FirstSectorofCluster * BPB_BytesPerSector;
+    int ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSec);
+    int ThisFATEntOffset = 0;
 
-    printf("Sector Number of Root Directory: %i\n", RootDirLocation);
+
+    //if (N > BPB_RootClus)
+    ThisFATEntOffset = FATOffset % BPB_BytesPerSec;   
+    
 }
 
 // NOTES:
