@@ -9,6 +9,7 @@ struct DirectoryEntry
 	unsigned char DIR_Attr;
 	unsigned int DIR_FstClus;
 	unsigned int DIR_FileSize;
+	unsigned char END_OF_ARRAY;
 };
 
 struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum);

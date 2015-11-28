@@ -58,14 +58,18 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 					returnArray[index].DIR_FileSize = little_to_big(rawData+28, 4);
 					printf("\nDIR_Attr: %x\n", returnArray[index].DIR_Attr);
 					printf("DIR_FstClus: %x\n", returnArray[index].DIR_FstClus);
+					printf("DIR_ByteOffset: %x\n", FindFirstSectorOfCluster(returnArray[index].DIR_FstClus));
 					printf("DIR_FileSize: %x\n", returnArray[index].DIR_FileSize);
 					printf("\n");
+					returnArray[index++].END_OF_ARRAY = 0;
 				}
 			}
 			byteIndexOffset += 32;
 		} while (rawData[0] != 0x00 && rawData[0] != 0xE5 && byteIndexOffset < GetBytesPerSec()*GetSecPerClus());
 		nextClusterIndex = next_cluster(nextClusterIndex);
 	} while (nextClusterIndex < 0x0FFFFFF8);
+	returnArray[index].END_OF_ARRAY = 1;
+	return returnArray;
 }
 
 unsigned int next_cluster(unsigned int current_cluster){
