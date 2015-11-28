@@ -2,8 +2,9 @@
 #define _LS_H
 #include <stdio.h>
 #include <stdlib.h>
+#include "directoryparse.h"
 
-void list(char * dirname);
+void list(unsigned int clusterNum);
 
 
 

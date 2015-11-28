@@ -18,7 +18,7 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 	do
 	{
 		unsigned int byteIndex = FindFirstSectorOfCluster(nextClusterIndex);
-		printf("Byte index: %x\n", byteIndex);
+		//printf("Byte index: %x\n", byteIndex);
 	
 		unsigned int byteIndexOffset = 0;
 		do
@@ -42,25 +42,31 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 				else
 				{
 					int i;
-					printf("DIR_Name: ");
+					//printf("DIR_Name: ");
+					// assign DIR_Name
 					for (i = 0; i < 11; i++)
 					{
 						returnArray[index].DIR_Name[i] = rawData[i];
-						printf("%c", returnArray[index].DIR_Name[i]);
+						//printf("%c", returnArray[index].DIR_Name[i]);
 					}
+					// null terminate DIR_Name
+					returnArray[index].DIR_Name[11] = '\0';
+					// assign DIR_Attr
 					returnArray[index].DIR_Attr = rawData[11];
+					// assign DIR_FstClus
 					unsigned char tempArray[4];
 					tempArray[0] = rawData[26];
 					tempArray[1] = rawData[27];
 					tempArray[2] = rawData[20];
 					tempArray[3] = rawData[21];
 					returnArray[index].DIR_FstClus = little_to_big(tempArray, 4);
+					// assign DIR_FileSize
 					returnArray[index].DIR_FileSize = little_to_big(rawData+28, 4);
-					printf("\nDIR_Attr: %x\n", returnArray[index].DIR_Attr);
+					/*printf("\nDIR_Attr: %x\n", returnArray[index].DIR_Attr);
 					printf("DIR_FstClus: %x\n", returnArray[index].DIR_FstClus);
 					printf("DIR_ByteOffset: %x\n", FindFirstSectorOfCluster(returnArray[index].DIR_FstClus));
 					printf("DIR_FileSize: %x\n", returnArray[index].DIR_FileSize);
-					printf("\n");
+					printf("\n");*/
 					returnArray[index++].END_OF_ARRAY = 0;
 				}
 			}

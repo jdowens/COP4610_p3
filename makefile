@@ -5,8 +5,8 @@ all:		exe
 debug: 		FLAGS += -g
 debug:		exe
 
-exe:		main.o utility.o filetable.o directoryparse.o
-		gcc $(FLAGS) -o prog.x main.o utility.o filetable.o directoryparse.o
+exe:		main.o utility.o filetable.o directoryparse.o ls.o
+		gcc $(FLAGS) -o prog.x main.o utility.o filetable.o directoryparse.o ls.o
 main.o:		main.c
 		gcc $(FLAGS) -c main.c
 utility.o:	utility.c utility.h
@@ -15,5 +15,7 @@ filetable.o:	filetable.c filetable.h
 		gcc $(FLAGS) -c filetable.c
 directoryparse.o:	directoryparse.c directoryparse.h
 		gcc $(FLAGS) -c directoryparse.c
+ls.o:		ls.c ls.h
+		gcc $(FLAGS) -c ls.c
 clean:
 		rm *.o prog.x
