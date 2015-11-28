@@ -104,26 +104,11 @@ int FindFirstSectorOfCluster(int N)
     return DirLocation;
 }
 
-void FindFATTable(int N)
-{
-    int FATOffset = N * 4;
-
-    int ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSector);
-    int ThisFATEntOffset = 0;
-
-
-    //if (N > BPB_RootClus)
-    ThisFATEntOffset = FATOffset % BPB_BytesPerSector;   
-    
-}
-
-// utility function to convert cstring to short(int)
-//short StrToShort(char * cstr)
-//{
-//}
-
 unsigned int FAT_Start(){
-	return 0x4000;
+    int FATOffset = N * 4;
+    int ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSector);
+
+    return ThisFATSecNum;
 }
 
 
