@@ -11,7 +11,6 @@ int main()
 //	TestFileTable();
 //	TestNextCluster();
 
-    ToFAT32("foo.bar");
 	//list(2);
 	//list(4);
     //list(5);
@@ -25,6 +24,8 @@ int main()
 	size("FATSPEC PDF");
 	list(4);
 	list(5);
+
+    ToFAT32("prettybg.big");
 	/*
 	// print root
 	// and how to use GetDirectoryContents fucnction
