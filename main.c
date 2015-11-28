@@ -8,6 +8,7 @@ int main()
 	ParseBootSector();
 	TestFileTable();
 	TestNextCluster();
+	GetDirectoryContents(2);
 	CloseImageFile();
 	return 0;
 }
