@@ -15,6 +15,14 @@ struct DirectoryEntry
 struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum);
 struct DirectoryEntry* DirectoryVectorPushBack(struct DirectoryEntry* vec, struct DirectoryEntry* file);
 
+// this functions takes the string (in FAT-32 format) of a file, then returns which cluster this file
+// starts in (Given that the file exists in the current directory)
+// else the function returns 0xFFFFFFFF
+unsigned int NameToClusterNumber(const char* name);
+
+unsigned int GetCurrentDirectory();
+void SetCurrentDirectory(unsigned int clusterNum);
+
 unsigned int next_cluster(unsigned int);
 void TestNextCluster();
 
