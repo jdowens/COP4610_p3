@@ -1,7 +1,7 @@
 #include "program.h"
 
-char USER_INPUT_RAW[2048];
-char USER_INPUT[5][256];
+char USER_INPUT_RAW[USER_INPUT_BUFFER_LENGTH*5];
+char USER_INPUT[5][USER_INPUT_BUFFER_LENGTH];
 
 void RunProgram(void)
 {
@@ -55,9 +55,14 @@ void GetUserInput(void)
 	unsigned int index = 0;
 	while (tmp_buff != NULL)
 	{
-		strncpy(USER_INPUT[index], tmp_buff, 256);
+		strncpy(USER_INPUT[index], tmp_buff, USER_INPUT_BUFFER_LENGTH);
 		printf("%s\n", USER_INPUT[index]);
 		tmp_buff = strtok(NULL, " \t\n\0");
 		++index;
+	}
+	int i;
+	for (i = index; i < 5; i++)
+	{
+		memset(USER_INPUT[i], " ", USER_INPUT_BUFFER_LENGTH);
 	}
 }
