@@ -1,12 +1,12 @@
-FLAGS = -Wall
+FLAGS = -Wall -std=c99
 
 all:		exe
 
 debug: 		FLAGS += -g
 debug:		exe
 
-exe:		main.o utility.o filetable.o directoryparse.o ls.o
-		gcc $(FLAGS) -o prog.x main.o utility.o filetable.o directoryparse.o ls.o
+exe:		main.o utility.o filetable.o directoryparse.o ls.o parseinput.o
+		gcc $(FLAGS) -o prog.x main.o utility.o filetable.o directoryparse.o ls.o parseinput.o
 main.o:		main.c
 		gcc $(FLAGS) -c main.c
 utility.o:	utility.c utility.h
@@ -17,5 +17,7 @@ directoryparse.o:	directoryparse.c directoryparse.h
 		gcc $(FLAGS) -c directoryparse.c
 ls.o:		ls.c ls.h
 		gcc $(FLAGS) -c ls.c
+parseinput.o:	parseinput.c parseinput.h
+		gcc $(FLAGS) -c parseinput.c
 clean:
 		rm *.o prog.x

@@ -105,7 +105,7 @@ int FindFirstSectorOfCluster(int N)
 }
 
 unsigned int FAT_Start(){
-    int FATOffset = N * 4;
+    int FATOffset = BPB_RootClus * 4;
     int ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSector);
 
     return ThisFATSecNum;
