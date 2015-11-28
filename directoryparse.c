@@ -82,7 +82,7 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 
 unsigned int NameToClusterNumber(const char* name)
 {
-	struct DirectoryEntry* tmp = GetDirectoryContents(GetCurrentDirectory());
+	struct DirectoryEntry* tmp = GetDirectoryContents(GetCurrentDirectoryClusterNum());
 	unsigned int index = 0;
 	while (!tmp[index].END_OF_ARRAY)
 	{
@@ -95,12 +95,12 @@ unsigned int NameToClusterNumber(const char* name)
 	return 0xFFFFFFFF;
 }
 
-unsigned int GetCurrentDirectory()
+unsigned int GetCurrentDirectoryClusterNum()
 {
 	return CURRENT_CLUSTER;
 }
 
-void SetCurrentDirectory(unsigned int clusterNum)
+void SetCurrentDirectoryClusterNum(unsigned int clusterNum)
 {
 	CURRENT_CLUSTER = clusterNum;
 }

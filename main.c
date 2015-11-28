@@ -9,9 +9,10 @@ int main()
 	ParseBootSector();
 	TestFileTable();
 	TestNextCluster();
-	SetCurrentDirectory(GetRootClusterNum());
+	SetCurrentDirectoryClusterNum(GetRootClusterNum());
 	list(2);
-	list(NameToClusterNumber("RED        "));
+	list(NameToClusterNumber("BLUE       "));
+	size("FATSPEC PDF");
 	list(4);
 	list(5);
 	/*

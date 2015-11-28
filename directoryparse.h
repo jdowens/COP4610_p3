@@ -20,8 +20,8 @@ struct DirectoryEntry* DirectoryVectorPushBack(struct DirectoryEntry* vec, struc
 // else the function returns 0xFFFFFFFF
 unsigned int NameToClusterNumber(const char* name);
 
-unsigned int GetCurrentDirectory();
-void SetCurrentDirectory(unsigned int clusterNum);
+unsigned int GetCurrentDirectoryClusterNum();
+void SetCurrentDirectoryClusterNum(unsigned int clusterNum);
 
 unsigned int next_cluster(unsigned int);
 void TestNextCluster();

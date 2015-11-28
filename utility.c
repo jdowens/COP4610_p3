@@ -56,11 +56,11 @@ unsigned int GetRootClusterNum(void)
 	SectorNumber = num;
 }
 
-unsigned int GetCurrentSectorNum()
+int GetCurrentSectorNum()
 {
 	return SectorNumber;
-}
-*/
+}*/
+
 void ParseBootSector(void)
 {
     unsigned short store_bytes[4];
