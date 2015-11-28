@@ -9,7 +9,9 @@ int main()
 	ParseBootSector();
 	TestFileTable();
 	TestNextCluster();
+	SetCurrentDirectory(GetRootClusterNum());
 	list(2);
+	list(NameToClusterNumber("RED        "));
 	list(4);
 	list(5);
 	/*

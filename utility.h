@@ -14,6 +14,8 @@ int GetCurrentSectorNum();
 short GetBytesPerSec(void);
 short GetSecPerClus(void);
 
+unsigned int GetRootClusterNum(void);
+
 int FindFirstSectorOfCluster(int N);
 
 void ParseBootSector(void);

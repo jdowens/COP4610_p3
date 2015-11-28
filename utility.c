@@ -46,6 +46,11 @@ short GetSecPerClus(void)
     return BPB_SecPerClus;
 }
 
+unsigned int GetRootClusterNum(void)
+{
+	return BPB_RootClus;
+}
+
 /*void SetCurrentSectorNum(unsigned int num)
 {
 	SectorNumber = num;
@@ -105,10 +110,10 @@ int FindFirstSectorOfCluster(int N)
 }
 
 unsigned int FAT_Start(){
-    int FATOffset = N * 4;
+    int FATOffset = BPB_RootClus * 4;
     int ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSector);
 
-    return ThisFATSecNum;
+    return ThisFATSecNum*BPB_BytesPerSector;
 }
 
 

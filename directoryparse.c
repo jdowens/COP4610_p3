@@ -1,7 +1,7 @@
 #include "directoryparse.h"
 #include "utility.h"
 
-unsigned int CURRENT_CLUSTER = 2;
+unsigned int CURRENT_CLUSTER = 0;
 
 struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 {
