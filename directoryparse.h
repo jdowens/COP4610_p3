@@ -5,9 +5,10 @@
 
 struct DirectoryEntry
 {
-	char name[32];
-	unsigned int clusterNum;
-	unsigned int clusterOffset;
+	char DIR_Name[32];
+	unsigned char DIR_Attr;
+	unsigned int DIR_FstClus;
+	unsigned int DIR_FileSize;
 };
 
 struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum);
