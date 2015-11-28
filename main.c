@@ -15,6 +15,16 @@ int main()
 	//list(2);
 	//list(4);
     //list(5);
+	OpenImageFile("fat32.img");
+	ParseBootSector();
+	TestFileTable();
+	TestNextCluster();
+	SetCurrentDirectoryClusterNum(GetRootClusterNum());
+	list(2);
+	list(NameToClusterNumber("BLUE       "));
+	size("FATSPEC PDF");
+	list(4);
+	list(5);
 	/*
 	// print root
 	// and how to use GetDirectoryContents fucnction

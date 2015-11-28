@@ -1,6 +1,8 @@
 #include "directoryparse.h"
 #include "utility.h"
 
+unsigned int CURRENT_CLUSTER = 0;
+
 struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 {
 	FILE* inFile = GetImageFile();
@@ -76,6 +78,31 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 	} while (nextClusterIndex < 0x0FFFFFF8);
 	returnArray[index].END_OF_ARRAY = 1;
 	return returnArray;
+}
+
+unsigned int NameToClusterNumber(const char* name)
+{
+	struct DirectoryEntry* tmp = GetDirectoryContents(GetCurrentDirectoryClusterNum());
+	unsigned int index = 0;
+	while (!tmp[index].END_OF_ARRAY)
+	{
+		if (strcmp(tmp[index].DIR_Name, name) == 0)
+		{
+			return tmp[index].DIR_FstClus;
+		}
+		index++;
+	}
+	return 0xFFFFFFFF;
+}
+
+unsigned int GetCurrentDirectoryClusterNum()
+{
+	return CURRENT_CLUSTER;
+}
+
+void SetCurrentDirectoryClusterNum(unsigned int clusterNum)
+{
+	CURRENT_CLUSTER = clusterNum;
 }
 
 unsigned int next_cluster(unsigned int current_cluster){

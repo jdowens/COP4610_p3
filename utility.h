@@ -9,10 +9,12 @@ void CloseImageFile();
 FILE* GetImageFile();
 
 void SetCurrentSectorNum(unsigned int num);
-int GetCurrentSectorNum();
+unsigned int GetCurrentSectorNum();
 
 short GetBytesPerSec(void);
 short GetSecPerClus(void);
+
+unsigned int GetRootClusterNum(void);
 
 int FindFirstSectorOfCluster(int N);
 
