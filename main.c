@@ -3,6 +3,7 @@
 #include "directoryparse.h"
 #include "parseinput.h"
 #include "ls.h"
+#include "program.h"
 
 int main()
 {
@@ -47,5 +48,6 @@ int main()
 	GetDirectoryContents(5);
 	*/
 	//CloseImageFile();
+	RunProgram();
 	return 0;
 }

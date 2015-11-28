@@ -5,8 +5,8 @@ all:		exe
 debug: 		FLAGS += -g
 debug:		exe
 
-exe:		main.o utility.o filetable.o directoryparse.o ls.o parseinput.o size.o
-		gcc $(FLAGS) -o prog.x main.o utility.o filetable.o directoryparse.o ls.o parseinput.o size.o
+exe:		main.o utility.o filetable.o directoryparse.o ls.o parseinput.o size.o program.o
+		gcc $(FLAGS) -o prog.x main.o utility.o filetable.o directoryparse.o ls.o parseinput.o size.o program.o
 main.o:		main.c
 		gcc $(FLAGS) -c main.c
 utility.o:	utility.c utility.h
@@ -21,5 +21,7 @@ parseinput.o:	parseinput.c parseinput.h
 		gcc $(FLAGS) -c parseinput.c
 size.o:		size.c size.h
 		gcc $(FLAGS) -c size.c
+program.o:	program.c program.h
+		gcc $(FLAGS) -c program.c
 clean:
 		rm *.o prog.x
