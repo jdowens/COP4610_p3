@@ -4,6 +4,7 @@
 #include "parseinput.h"
 #include "ls.h"
 #include "program.h"
+#include "read.h"
 
 int main()
 {
@@ -48,6 +49,7 @@ int main()
 	GetDirectoryContents(5);
 	*/
 	//CloseImageFile();
-	RunProgram();
+//	RunProgram();
+	TestRead();
 	return 0;
 }

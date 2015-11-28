@@ -6,5 +6,6 @@
 #include "directoryparse.h"
 
 void read(const char*,int,int,unsigned int);
+//unsigned char read_data(int,int,unsigned int);
 void TestRead();
 #endif
