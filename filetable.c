@@ -4,20 +4,27 @@ struct FTEntry* FTRoot = NULL;
 
 void FTAdd(const char* file_name, const char* mode)
 {
-	struct FTEntry* tmp = calloc(1, sizeof(struct FTEntry));
-	strcpy(tmp->name, file_name);
-	strcpy(tmp->mode, mode);
-	tmp->next = NULL;
-	if (FTRoot == NULL)
+	if (FTIsOpen(file_name))
 	{
-		FTRoot = tmp;
+		printf("File already open.\n");
 	}
 	else
 	{
-		struct FTEntry* it = FTRoot;
-		while (it->next != NULL)
-			it = it->next;
-		it->next = tmp;
+		struct FTEntry* tmp = calloc(1, sizeof(struct FTEntry));
+		strcpy(tmp->name, file_name);
+		strcpy(tmp->mode, mode);
+		tmp->next = NULL;
+		if (FTRoot == NULL)
+		{
+			FTRoot = tmp;
+		}
+		else
+		{
+			struct FTEntry* it = FTRoot;
+			while (it->next != NULL)
+				it = it->next;
+			it->next = tmp;
+		}
 	}
 }
 

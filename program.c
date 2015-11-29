@@ -56,10 +56,40 @@ void RunProgram(void)
 				size(USER_INPUT[1]);
 			}
 		}
+		else if (strcmp(USER_INPUT[0], "open") == 0)
+		{
+			if (strcmp(USER_INPUT[1], ". . . . .") == 0 ||
+			    strcmp(USER_INPUT[2], ". . . . .") == 0)
+			{
+				printf("Requires a file name argument followed by a mode argument\n");
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				open(parsed_dir, USER_INPUT[2]);
+			}
+		}
+		else if (strcmp(USER_INPUT[0], "close") == 0)
+		{
+			if (strcmp(USER_INPUT[1], ". . . . .") == 0)
+			{
+				printf("Requires a file name argument\n");
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				close(parsed_dir);
+			}
+		}
 		else if (strcmp(USER_INPUT[0], "debug") == 0)
 		{
 			printf("CURRENT_CLUSTER: %d\n", GetCurrentDirectoryClusterNum());
 			printf("CURRENT_CLUSTER BYTE_ADDRESS: 0x%x\n", FindFirstSectorOfCluster(GetCurrentDirectoryClusterNum()));
+			FTPrint();
 		}
 	}
 }

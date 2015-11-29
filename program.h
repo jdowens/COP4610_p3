@@ -6,6 +6,7 @@
 #include "directoryparse.h"
 #include "utility.h"
 #include "cd.h"
+#include "openclose.h"
 
 
 #define USER_INPUT_BUFFER_LENGTH 256
