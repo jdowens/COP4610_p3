@@ -48,7 +48,7 @@ int main()
 	printf("\n\n\n\n\nPRINT BLUE DIRECTORY:\n");
 	GetDirectoryContents(5);
 	*/
-	//CloseImageFile();
+//	CloseImageFile();
 //	RunProgram();
 	TestRead();
 	return 0;
