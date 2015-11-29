@@ -26,7 +26,7 @@ int main()
 	size("FATSPEC PDF");
 	list(4);
 	list(5);
-	char test[20] = "red";
+	char test[20] = "foo.bar";
     ToFAT32(test);
     	printf("KAJSDKFJALSKDJF: %s\n", test);
 	/*
