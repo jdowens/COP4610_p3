@@ -18,7 +18,8 @@ void RunProgram(void)
 		{
 			if (strcmp(USER_INPUT[1], ". . . . .") == 0)
 			{
-				printf("Requires an argument for path name\n");
+				//printf("Requires an argument for path name\n");
+				list(GetCurrentDirectoryClusterNum());
 			}
 			else
 			{
