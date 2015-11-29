@@ -60,5 +60,31 @@ void ToFAT32(char * input)
 
 void ToStandardFormat(char * input)
 {
-    
+   char exten[4];
+   char temp[12];
+
+   exten[0] = input[8];
+   exten[1] = input[9];
+   exten[2] = input[10];
+   exten[3] = '\0';
+
+   for(int i = 0; i < strlen(input); ++i)
+   {
+       if(input[i] == ' ')
+       {
+          if(exten[0] >= 'A' && exten[0] <= 'Z')
+          {
+             temp[i] = '.';
+             strcat(temp, exten);
+          }
+          strcpy(input, temp);
+          return;
+       }
+
+       temp[i] = input[i];
+   }
+
+   temp[11] = '\0';
+   strcpy(input,temp);
+
 }
