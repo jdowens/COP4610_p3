@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "directoryparse.h"
 #include "program.h"
+#include "parseinput.h"
 
 void list(unsigned int clusterNum);
 void ls(const char* path);
