@@ -16,32 +16,50 @@ void RunProgram(void)
 		}
 		else if (strcmp(USER_INPUT[0], "ls") == 0)
 		{
-			if (strcmp(USER_INPUT[1], ".") == 0)
+			if (strcmp(USER_INPUT[1], ". . . . .") == 0)
+			{
+				//printf("Requires an argument for path name\n");
 				list(GetCurrentDirectoryClusterNum());
+			}
 			else
 			{
-				struct DirectoryEntry* tmp = GetDirectoryContents(GetCurrentDirectoryClusterNum());
-				unsigned int index = 0;
-				unsigned int somethingFound = 0;
-				while (!tmp[index].END_OF_ARRAY)
-				{
-					if (strcmp(USER_INPUT[1], tmp[index].DIR_Name) == 0 &&
-					    tmp[index].DIR_Attr & 0x10)
-					{
-						list(tmp[index].DIR_FstClus);
-						somethingFound = 1;
-					}
-					++index;
-				}
-				if (!somethingFound)
-				{
-					printf("Directory not found...\n");
-				}
+				ls(USER_INPUT[1]);
 			}
 		}
 		else if (strcmp(USER_INPUT[0], "cd") == 0)
 		{
-			cd(USER_INPUT[1]);
+			if (strcmp(USER_INPUT[1], ". . . . .") == 0)
+			{
+				printf("Requires an argument for path name\n");
+			}
+			else if (strcmp(USER_INPUT[1], ".") == 0)
+			{
+				// do nothing
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				printf("!%s!\n", parsed_dir);
+				cd(parsed_dir);
+			}
+		}
+		else if (strcmp(USER_INPUT[0], "size") == 0)
+		{
+			if (strcmp(USER_INPUT[1], ". . . . .") == 0)
+			{
+				printf("Requires a file name argument\n");
+			}
+			else
+			{
+				size(USER_INPUT[1]);
+			}
+		}
+		else if (strcmp(USER_INPUT[0], "debug") == 0)
+		{
+			printf("CURRENT_CLUSTER: %d\n", GetCurrentDirectoryClusterNum());
+			printf("CURRENT_CLUSTER BYTE_ADDRESS: 0x%x\n", FindFirstSectorOfCluster(GetCurrentDirectoryClusterNum()));
 		}
 	}
 }
@@ -67,6 +85,7 @@ void GetUserInput(void)
 	int i;
 	for (i = index; i < 5; i++)
 	{
-		memset(USER_INPUT[i], " ", USER_INPUT_BUFFER_LENGTH);
+		strcpy(USER_INPUT[i], ". . . . .");
+		//memset(USER_INPUT[i], " ", USER_INPUT_BUFFER_LENGTH);
 	}
 }

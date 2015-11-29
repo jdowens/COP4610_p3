@@ -22,6 +22,9 @@ unsigned int NameToClusterNumber(const char* name);
 
 unsigned int GetCurrentDirectoryClusterNum();
 void SetCurrentDirectoryClusterNum(unsigned int clusterNum);
+unsigned int GetPreviousDirectoryClusterNum();
+unsigned int PopPreviousDirectoryClusterNum();
+void PushPreviousDirectoryClusterNum(unsigned int clusterNum);
 
 unsigned int next_cluster(unsigned int);
 void TestNextCluster();
