@@ -12,6 +12,7 @@ void cd(const char* path)
 			SetCurrentDirectoryClusterNum(tmp[index].DIR_FstClus);
 			somethingFound = 1;
 		}
+		++index;
 	}
 	if (somethingFound == 0)
 	{

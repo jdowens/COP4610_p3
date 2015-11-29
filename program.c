@@ -39,6 +39,10 @@ void RunProgram(void)
 				}
 			}
 		}
+		else if (strcmp(USER_INPUT[0], "cd") == 0)
+		{
+			cd(USER_INPUT[1]);
+		}
 	}
 }
 
