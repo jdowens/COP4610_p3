@@ -44,6 +44,17 @@ void RunProgram(void)
 				cd(parsed_dir);
 			}
 		}
+		else if (strcmp(USER_INPUT[0], "size") == 0)
+		{
+			if (strcmp(USER_INPUT[1], ". . . . .") == 0)
+			{
+				printf("Requires a file name argument\n");
+			}
+			else
+			{
+				size(USER_INPUT[1]);
+			}
+		}
 		else if (strcmp(USER_INPUT[0], "debug") == 0)
 		{
 			printf("CURRENT_CLUSTER: %d\n", GetCurrentDirectoryClusterNum());
