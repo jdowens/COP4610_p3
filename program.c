@@ -38,11 +38,11 @@ void RunProgram(void)
 			}
 			else
 			{
-				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
-				strcpy(parsed_dir, USER_INPUT[1]);
-				ToFAT32(parsed_dir);
-				printf("!%s!\n", parsed_dir);
-				cd(parsed_dir);
+				//char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				//strcpy(parsed_dir, USER_INPUT[1]);
+				//ToFAT32(parsed_dir);
+				//printf("!%s!\n", parsed_dir);
+				cd(USER_INPUT[1]);
 			}
 		}
 		else if (strcmp(USER_INPUT[0], "size") == 0)
