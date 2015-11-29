@@ -26,9 +26,9 @@ int main()
 	size("FATSPEC PDF");
 	list(4);
 	list(5);
-	char test[20] = "red";
+	char test[20] = "pickles.asf";
     ToFAT32(test);
-    	printf("KAJSDKFJALSKDJF: %s\n", test);
+    	printf("KAJSDKFJALSKDJF: %s %i\n", test, strlen(test));
 	/*
 	// print root
 	// and how to use GetDirectoryContents fucnction
