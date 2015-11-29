@@ -16,7 +16,11 @@ void RunProgram(void)
 		}
 		else if (strcmp(USER_INPUT[0], "ls") == 0)
 		{
-			if (strcmp(USER_INPUT[1], ".") == 0)
+			if (strcmp(USER_INPUT[1], ". . . . .") == 0)
+			{
+				printf("Requires an argument for path name\n");
+			}
+			else if (strcmp(USER_INPUT[1], ".") == 0)
 				list(GetCurrentDirectoryClusterNum());
 			else
 			{
@@ -44,10 +48,21 @@ void RunProgram(void)
 		}
 		else if (strcmp(USER_INPUT[0], "cd") == 0)
 		{
-			char parsed_dir[USER_INPUT_BUFFER_LENGTH];
-			strcpy(parsed_dir, USER_INPUT[1]);
-			ToFAT32(parsed_dir);
-			cd(parsed_dir);
+			if (strcmp(USER_INPUT[1], ". . . . .") == 0)
+			{
+				printf("Requires an argument for path name\n");
+			}
+			else if (strcmp(USER_INPUT[1], ".") == 0)
+			{
+				// do nothing
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				cd(parsed_dir);
+			}
 		}
 	}
 }
@@ -73,6 +88,7 @@ void GetUserInput(void)
 	int i;
 	for (i = index; i < 5; i++)
 	{
-		memset(USER_INPUT[i], " ", USER_INPUT_BUFFER_LENGTH);
+		strcpy(USER_INPUT[i], ". . . . .");
+		//memset(USER_INPUT[i], " ", USER_INPUT_BUFFER_LENGTH);
 	}
 }
