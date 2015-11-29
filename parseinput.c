@@ -8,9 +8,15 @@ void ToFAT32(char * input)
    char FAT32string [13], temp [13];
    short count_spaces = 11 - strlen(input);
 
-   if(input[0] == '.')
+   if(!strcmp(input, ".."))
    {
-       printf ("illegal, DIR_Name[0] cannot be 0x20\n");
+       strcpy(input, "..         ");
+       return;
+   }
+
+   if(!strcmp(input, "."))
+   {
+       strcpy(input, ".          ");
        return;
    }
 
@@ -52,3 +58,7 @@ void ToFAT32(char * input)
    strcpy(input, FAT32string); 
 }
 
+void ToStandardFormat(char * input)
+{
+    
+}
