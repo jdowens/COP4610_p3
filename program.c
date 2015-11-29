@@ -61,8 +61,14 @@ void RunProgram(void)
 				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
 				strcpy(parsed_dir, USER_INPUT[1]);
 				ToFAT32(parsed_dir);
+				printf("!%s!\n", parsed_dir);
 				cd(parsed_dir);
 			}
+		}
+		else if (strcmp(USER_INPUT[0], "debug") == 0)
+		{
+			printf("CURRENT_CLUSTER: %d\n", GetCurrentDirectoryClusterNum());
+			printf("CURRENT_CLUSTER BYTE_ADDRESS: 0x%x\n", FindFirstSectorOfCluster(GetCurrentDirectoryClusterNum()));
 		}
 	}
 }
