@@ -23,6 +23,7 @@ void ParseBootSector(void);
 void FindRootDirectory(void);
 
 unsigned int little_to_big(unsigned char*, int);
+unsigned char* big_to_little(unsigned int value, unsigned int size);
 
 unsigned int FAT_Start();
 

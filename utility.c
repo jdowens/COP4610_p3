@@ -127,6 +127,22 @@ unsigned int little_to_big(unsigned char *array, int bytes){
 	return ret;
 }
 
+unsigned char* big_to_little(unsigned int value, unsigned int size)
+{
+	static unsigned char ret[4];
+	printf("%016llX\n", ret);
+	memset(ret, 0, 4);
+	unsigned int i = 0;
+	unsigned int mask = 0x000000FF;
+	unsigned int tmp_val = value;
+	for (i = 0; i < size; i++)
+	{
+		ret[i] = tmp_val&mask;
+		tmp_val = tmp_val >> 8;
+	}
+	return ret;
+}
+
 // NOTES:
 // 
 // FATOffset = N * 4
