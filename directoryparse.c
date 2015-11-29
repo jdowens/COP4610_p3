@@ -73,7 +73,7 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 				}
 			}
 			byteIndexOffset += 32;
-		} while (rawData[0] != 0x00 && rawData[0] != 0xE5 && byteIndexOffset < GetBytesPerSec()*GetSecPerClus());
+		} while (rawData[0] != 0x00 /*&& rawData[0] != 0xE5*/ && byteIndexOffset < GetBytesPerSec()*GetSecPerClus());
 		nextClusterIndex = next_cluster(nextClusterIndex);
 	} while (nextClusterIndex < 0x0FFFFFF8);
 	returnArray[index].END_OF_ARRAY = 1;

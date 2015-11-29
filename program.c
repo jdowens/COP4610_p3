@@ -23,9 +23,12 @@ void RunProgram(void)
 				struct DirectoryEntry* tmp = GetDirectoryContents(GetCurrentDirectoryClusterNum());
 				unsigned int index = 0;
 				unsigned int somethingFound = 0;
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
 				while (!tmp[index].END_OF_ARRAY)
 				{
-					if (strcmp(USER_INPUT[1], tmp[index].DIR_Name) == 0 &&
+					if (strcmp(parsed_dir, tmp[index].DIR_Name) == 0 &&
 					    tmp[index].DIR_Attr & 0x10)
 					{
 						list(tmp[index].DIR_FstClus);
@@ -41,7 +44,10 @@ void RunProgram(void)
 		}
 		else if (strcmp(USER_INPUT[0], "cd") == 0)
 		{
-			cd(USER_INPUT[1]);
+			char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+			strcpy(parsed_dir, USER_INPUT[1]);
+			ToFAT32(parsed_dir);
+			cd(parsed_dir);
 		}
 	}
 }

@@ -26,9 +26,6 @@ int main()
 	size("FATSPEC PDF");
 	list(4);
 	list(5);
-	char test[20] = "foo.bar";
-    ToFAT32(test);
-    	printf("KAJSDKFJALSKDJF: %s\n", test);
 	/*
 	// print root
 	// and how to use GetDirectoryContents fucnction
@@ -50,7 +47,7 @@ int main()
 	GetDirectoryContents(5);
 	*/
 	//CloseImageFile();
-//	RunProgram();
+	RunProgram();
 	TestRead();
 	return 0;
 }
