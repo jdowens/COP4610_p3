@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+const char PREVDIR[11] = "..         ";
+const char CURRDIR[11] = ".          ";
 
 void ToFAT32(char * input)
 {
@@ -10,13 +12,13 @@ void ToFAT32(char * input)
 
    if(!strcmp(input, ".."))
    {
-       strcpy(input, "..         ");
+       strcpy(input, PREVDIR);
        return;
    }
 
    if(!strcmp(input, "."))
    {
-       strcpy(input, ".          ");
+       strcpy(input, CURRDIR);
        return;
    }
 
@@ -60,6 +62,19 @@ void ToFAT32(char * input)
 
 void ToStandardFormat(char * input)
 {
+   if(!strcmp(input, PREVDIR))
+   {
+      strcpy(input, "..");
+      return;
+   }
+
+   if(!strcmp(input, CURRDIR))
+   {
+      strcpy(input, ".");
+      return;
+   }
+
+
    char exten[4];
    char temp[12];
 
@@ -77,13 +92,13 @@ void ToStandardFormat(char * input)
              temp[i] = '.';
              strcat(temp, exten);
           }
+          temp[i] = '\0';
           strcpy(input, temp);
           return;
        }
 
        temp[i] = input[i];
    }
-
    temp[11] = '\0';
    strcpy(input,temp);
 
