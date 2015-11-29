@@ -24,6 +24,9 @@ void FindRootDirectory(void);
 
 unsigned int little_to_big(unsigned char*, int);
 unsigned char* big_to_little(unsigned int value, unsigned int size);
+void WriteIntToImage(unsigned int value, unsigned int offset);
+void WriteShortToImage(unsigned short value, unsigned int offset);
+void WriteCharToImage(unsigned char value, unsigned int offset);
 
 unsigned int FAT_Start();
 

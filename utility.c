@@ -143,6 +143,32 @@ unsigned char* big_to_little(unsigned int value, unsigned int size)
 	return ret;
 }
 
+void WriteIntToImage(unsigned int value, unsigned int offset)
+{
+	fseek(ImageFile, offset, SEEK_SET);
+	unsigned char* tmp = big_to_little(value, 4);
+	for (int i = 0; i < 4; i++)
+	{
+		fputc(tmp[i], ImageFile);
+	}
+}
+
+void WriteShortToImage(unsigned short value, unsigned int offset)
+{
+	fseek(ImageFile, offset, SEEK_SET);
+	unsigned char* tmp = big_to_little(value, 2);
+	for (int i = 0; i < 2; i++)
+	{
+		fputc(tmp[i], ImageFile);
+	}
+}
+
+void WriteCharToImage(unsigned char value, unsigned int offset)
+{
+	fseek(ImageFile, offset, SEEK_SET);
+	fputc(value, ImageFile);
+}
+
 // NOTES:
 // 
 // FATOffset = N * 4
