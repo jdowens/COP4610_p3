@@ -20,30 +20,9 @@ void RunProgram(void)
 			{
 				printf("Requires an argument for path name\n");
 			}
-			else if (strcmp(USER_INPUT[1], ".") == 0)
-				list(GetCurrentDirectoryClusterNum());
 			else
 			{
-				struct DirectoryEntry* tmp = GetDirectoryContents(GetCurrentDirectoryClusterNum());
-				unsigned int index = 0;
-				unsigned int somethingFound = 0;
-				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
-				strcpy(parsed_dir, USER_INPUT[1]);
-				ToFAT32(parsed_dir);
-				while (!tmp[index].END_OF_ARRAY)
-				{
-					if (strcmp(parsed_dir, tmp[index].DIR_Name) == 0 &&
-					    tmp[index].DIR_Attr & 0x10)
-					{
-						list(tmp[index].DIR_FstClus);
-						somethingFound = 1;
-					}
-					++index;
-				}
-				if (!somethingFound)
-				{
-					printf("Directory not found...\n");
-				}
+				ls(USER_INPUT[1]);
 			}
 		}
 		else if (strcmp(USER_INPUT[0], "cd") == 0)

@@ -2,6 +2,8 @@
 #include "utility.h"
 
 unsigned int CURRENT_CLUSTER = 0;
+unsigned int PREVIOUS_CLUSTER_STACK[256];
+unsigned int PREVIOUS_CLUSTER_INDEX = 0; 
 
 struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 {
@@ -103,6 +105,30 @@ unsigned int GetCurrentDirectoryClusterNum()
 void SetCurrentDirectoryClusterNum(unsigned int clusterNum)
 {
 	CURRENT_CLUSTER = clusterNum;
+}
+
+unsigned int GetPreviousDirectoryClusterNum()
+{
+	if (PREVIOUS_CLUSTER_INDEX == 0)
+		return 0xFFFFFFFF;
+	else
+		return PREVIOUS_CLUSTER_STACK[PREVIOUS_CLUSTER_INDEX-1];
+}
+
+unsigned int PopPreviousDirectoryClusterNum()
+{
+	if (PREVIOUS_CLUSTER_INDEX == 0)
+		return 0xFFFFFFFF;
+	else
+	{
+		PREVIOUS_CLUSTER_INDEX--;
+		return PREVIOUS_CLUSTER_STACK[PREVIOUS_CLUSTER_INDEX];
+	}
+}
+
+void PushPreviousDirectoryClusterNum(unsigned int clusterNum)
+{
+	PREVIOUS_CLUSTER_STACK[PREVIOUS_CLUSTER_INDEX++] = clusterNum;
 }
 
 unsigned int next_cluster(unsigned int current_cluster){
