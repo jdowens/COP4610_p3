@@ -6,7 +6,12 @@ void list(unsigned int clusterNum)
 	unsigned int index = 0;
 	while (!tmp[index].END_OF_ARRAY)
 	{
-		printf("%s ", tmp[index++].DIR_Name);
+		char tmp_buf[32];
+		memset(tmp_buf, '\0', 32);
+		strcpy(tmp_buf, tmp[index++].DIR_Name);
+		ToStandardFormat(tmp_buf);
+		//printf("%s:%s\n", tmp_buf, tmp[index-1].DIR_Name);
+		printf("%s   ", tmp_buf);
 	}
 	printf("\n");
 }
