@@ -26,8 +26,9 @@ int main()
 	size("FATSPEC PDF");
 	list(4);
 	list(5);
-
-    ToFAT32("prettybg.big");
+	char test[20] = "red";
+    ToFAT32(test);
+    	printf("KAJSDKFJALSKDJF: %s\n", test);
 	/*
 	// print root
 	// and how to use GetDirectoryContents fucnction

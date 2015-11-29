@@ -29,9 +29,9 @@ void ToFAT32(char * input)
        }
    }
    for(int i = strlen(input); i < 12; ++i)
-       FAT32string[i] = '*';
+       FAT32string[i] = ' ';
 
-    printf("%s %i\n", FAT32string, count_spaces);
+   // printf("%s %i\n", FAT32string, count_spaces);
    strcpy(temp, FAT32string);
 
    for(int i = 0; i < strlen(FAT32string); ++i)
@@ -42,7 +42,7 @@ void ToFAT32(char * input)
            FAT32string[9] = temp[i+2];
            FAT32string[10] = temp[i+3];
            for(int j = 0; j < count_spaces-1; ++j)
-               FAT32string[i+j] = '*';
+               FAT32string[i+j] = ' ';
 
            break;
        }
@@ -51,7 +51,6 @@ void ToFAT32(char * input)
    FAT32string[11] = '\0';
 
    printf("%s %i\n", FAT32string, strlen(FAT32string));
-    
-
+   strcpy(input, FAT32string); 
 }
 
