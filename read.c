@@ -18,11 +18,12 @@ void TestRead(){
         const char* TempFileName = NULL;
 //        int current_cluster = 0x00000002;
 //      read(TempFileName,0,5,current_cluster);
+	struct DirectoryEntry* directoryArray = GetDirectoryContents(GetCurrentDirectoryClusterNum());
         int current_cluster = NameToClusterNumber("A          ");
         printf("Test Read Data Below: \n");
         printf("Cluster Number for A: %x\n",NameToClusterNumber("A          "));
         printf("Cluster Address: %x\n",FindFirstSectorOfCluster(current_cluster));
        //figure out how to read in the dir size to display
-	 printf("File A size: %d",directoryArray[0].DIR_Size);
+	 printf("File A size: %d",directoryArray[0].DIR_FileSize);
 	read(TempFileName,0,8,current_cluster);
 }
