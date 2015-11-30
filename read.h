@@ -5,7 +5,6 @@
 #include "utility.h"
 #include "directoryparse.h"
 
-void read(const char*,int,int,unsigned int);
-//unsigned char read_data(int,int,unsigned int);
+void read(const char*,int,int);
 void TestRead();
 #endif
