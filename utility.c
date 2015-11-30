@@ -104,8 +104,7 @@ int FindFirstSectorOfCluster(int N)
     int FirstDataSector = BPB_RsvdSecCnt + (BPB_NumFats * BPB_FATSz32);
     int FirstSectorofCluster = ((N - 2) * BPB_SecPerClus) + FirstDataSector;
     int DirLocation = FirstSectorofCluster * BPB_BytesPerSector;
-    
-    //printf("Byte address of Current Cluster: %x\n", DirLocation);
+//  printf("Byte address of Current Cluster: %x\n", DirLocation);
     return DirLocation;
 }
 
