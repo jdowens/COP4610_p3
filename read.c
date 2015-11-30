@@ -8,10 +8,10 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 		unsigned int last_byte_loc =  NUM_BYTES-POSITION;
 		int print_bytes= NUM_BYTES;
 
-        	printf("\n\nTest Read Data Below: \n");
+/*        	printf("\n\nTest Read Data Below: \n");
         	printf("Cluster Number for XL_DATA: %x\n",cluster_number);
         	printf("Cluster Address: %x\n",FindFirstSectorOfCluster(cluster_number));
-
+*/
 		//get dir names and sizes
 	        int index = 0;
         	for(index = 0; !directoryArray[index].END_OF_ARRAY; index++){
@@ -76,10 +76,8 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 				//read one sector only
 				else{
 					//read from only one sector
-					printf("\nInside else statement.\n");
                 			fseek(ImageFile,FindFirstSectorOfCluster(cluster_number),SEEK_SET);
                 			fread(temp,sizeof(unsigned char),NUM_BYTES,ImageFile);
-                			printf("TestRead:\n%s %d %d %x\n",FILE_NAME,POSITION,NUM_BYTES,FindFirstSectorOfCluster(cluster_number));
 					for(index = 0; index < NUM_BYTES; index++){
                                                 printf("%x ",temp[index]);
                                         }//end for
@@ -89,7 +87,7 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 }
 
 void TestRead(){
-	int NUM_BYTES = 65536;
+	int NUM_BYTES = 7;
 	int POSITION = 0;
 	const char* TempFileName = "XL_DATA    ";
 	cd("BLUE       ");
