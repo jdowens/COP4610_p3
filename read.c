@@ -1,4 +1,4 @@
-#include "read.h" 
+#include "read.h"
 
 void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 		FILE* ImageFile = GetImageFile();
@@ -76,7 +76,7 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 				//read one sector only
 				else{
 					//read from only one sector
-                			fseek(ImageFile,FindFirstSectorOfCluster(cluster_number),SEEK_SET);
+                			fseek(ImageFile,FindFirstSectorOfCluster(cluster_number)+POSITION,SEEK_SET);
                 			fread(temp,sizeof(unsigned char),NUM_BYTES,ImageFile);
 					for(index = 0; index < NUM_BYTES; index++){
                                                 printf("%x ",temp[index]);
@@ -121,8 +121,8 @@ void valid_file(const char* FILE_NAME){
 
 
 void TestRead(){
-	int NUM_BYTES = 7;
-	int POSITION = 0;
+	int NUM_BYTES = 5;
+	int POSITION = 3;
 	const char* TempFileName = "XL_DATA    ";
 	cd("BLUE       ");
 	cd("BLUE2      ");
