@@ -146,10 +146,29 @@ void GetUserInput(void)
 	do
 	{
 		tmp = fgetc(stdin);
-		while(tmp != ' ' && tmp != '\n' && tmp != '\0')
+		if (user_vector_index == 4)
 		{
-			USER_INPUT[user_vector_index] = DynStrPushBack(USER_INPUT[user_vector_index], tmp);
+			if (tmp != '\"')
+				printf("Expected quotes around final argument");
 			tmp = fgetc(stdin);
+			while (tmp != '\"')
+			{
+				USER_INPUT[user_vector_index] = DynStrPushBack(USER_INPUT[user_vector_index], tmp);
+				tmp = fgetc(stdin);
+			}
+			// get the rest of the stream
+			while (tmp != '\n' && tmp != '\0')
+			{
+				tmp = fgetc(stdin);
+			}
+		}
+		else
+		{
+			while(tmp != ' ' && tmp != '\n' && tmp != '\0')
+			{
+				USER_INPUT[user_vector_index] = DynStrPushBack(USER_INPUT[user_vector_index], tmp);
+				tmp = fgetc(stdin);
+			}
 		}
 		printf("%s\n", USER_INPUT[user_vector_index]);
 		user_vector_index++;
