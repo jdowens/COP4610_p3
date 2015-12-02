@@ -6,7 +6,7 @@
 
 void ToFAT32(char * input);
 void ToStandardFormat(char * input);
-
+char* DynStrPushBack(char* dest, char c);
 
 
 
