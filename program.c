@@ -1,11 +1,21 @@
 #include "program.h"
 
-char USER_INPUT_RAW[USER_INPUT_BUFFER_LENGTH*5];
-char USER_INPUT[5][USER_INPUT_BUFFER_LENGTH];
+//char USER_INPUT_RAW[USER_INPUT_BUFFER_LENGTH*5];
+char* USER_INPUT[5];
+//char* USER_INPUT_0[USER_INPUT_BUFFER_LENGTH];
+//char* USER_INPUT_1[USER_INPUT_BUFFER_LENGTH];
+//char* USER_INPUT_2[USER_INPUT_BUFFER_LENGTH];
+//char* USER_INPUT_3[USER_INPUT_BUFFER_LENGTH];
 
 void RunProgram(void)
 {
 	int running = 1;
+	//USER_INPUT[0] = USER_INPUT_0;
+	//USER_INPUT[1] = USER_INPUT_1;
+	//USER_INPUT[2] = USER_INPUT_2;
+	//USER_INPUT[3] = USER_INPUT_3;
+	//USER_INPUT[4] = NULL;
+
 	while (running)
 	{
 		PrintPrompt();
@@ -109,6 +119,11 @@ void RunProgram(void)
 			PrintDirectoryVector(GetDirectoryContents(GetCurrentDirectoryClusterNum()));
 		}
 	}
+	int k;
+	for (k = 0; k < 5; k++)
+	{
+		free(USER_INPUT[k]);
+	}
 }
 
 void PrintPrompt(void)
@@ -116,6 +131,40 @@ void PrintPrompt(void)
 	printf("=> ");
 }
 
+void GetUserInput(void)
+{
+	char tmp;
+	int j;
+	for (j = 0; j < 5; j++)
+	{
+		if (USER_INPUT[j] != NULL)
+			free(USER_INPUT[j]);
+		USER_INPUT[j] = (char*)calloc(1, sizeof(char));
+		USER_INPUT[j][0] = '\0';
+	}
+	unsigned int user_vector_index = 0;
+	do
+	{
+		tmp = fgetc(stdin);
+		while(tmp != ' ' && tmp != '\n' && tmp != '\0')
+		{
+			USER_INPUT[user_vector_index] = DynStrPushBack(USER_INPUT[user_vector_index], tmp);
+			tmp = fgetc(stdin);
+		}
+		printf("%s\n", USER_INPUT[user_vector_index]);
+		user_vector_index++;
+	}while (tmp != '\n' && tmp != '\0' && user_vector_index < 5);
+
+	int i;
+	for (i = user_vector_index; i < 5; i++)
+	{
+		free(USER_INPUT[i]);
+		USER_INPUT[i] = calloc(10, sizeof(char));
+		strcpy(USER_INPUT[i], ". . . . .");
+		//memset(USER_INPUT[i], " ", USER_INPUT_BUFFER_LENGTH);
+	}
+}
+/*
 void GetUserInput(void)
 {
 	char* tmp_buff;
@@ -135,4 +184,4 @@ void GetUserInput(void)
 		strcpy(USER_INPUT[i], ". . . . .");
 		//memset(USER_INPUT[i], " ", USER_INPUT_BUFFER_LENGTH);
 	}
-}
+}*/
