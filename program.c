@@ -1,5 +1,4 @@
 #include "program.h"
-#include "ls.h"
 
 char USER_INPUT_RAW[USER_INPUT_BUFFER_LENGTH*5];
 char USER_INPUT[5][USER_INPUT_BUFFER_LENGTH];
