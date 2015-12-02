@@ -6,6 +6,10 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 		unsigned char temp[512];
 		struct DirectoryEntry* directoryArray = GetDirectoryContents(GetCurrentDirectoryClusterNum());
 
+		if(FTIsOpen(FILE_NAME)==0){
+			printf("Error: File is not open.\n");
+                        return;
+		}
                 if(FTIsOpenInRead(FILE_NAME)==0){
                         printf("Error: Cannot access this file.\n");
                         return;
