@@ -5,7 +5,7 @@ const char CURRDIR[11] = ".          ";
 
 void ToFAT32(char * input)
 {
-   char FAT32string [13], temp [13];
+   char FAT32string [13] = " ", temp [13] = " ";
    short inputSize = strlen(input);
    short count_spaces = 11 - inputSize;
 
