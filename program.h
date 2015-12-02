@@ -8,6 +8,10 @@
 #include "cd.h"
 #include "openclose.h"
 #include "ls.h"
+#include "size.h"
+#include "read.h"
+#include "parseinput.h"
+
 
 #define USER_INPUT_BUFFER_LENGTH 256
 
