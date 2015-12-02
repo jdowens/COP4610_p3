@@ -17,14 +17,16 @@ void open(const char* file_name, const char* mode)
 		unsigned int index = 0;
 		while (!tmp[index].END_OF_ARRAY)
 		{
-			if (tmp[index].DIR_Attr & 0x10)
-			{
-				printf("Cannot open a directory\n");
-				return;
-			}
 			if (strcmp(file_name, tmp[index].DIR_Name) == 0)
 			{
-				FTAdd(file_name, mode);
+				if (tmp[index].DIR_Attr & 0x10)
+				{
+					printf("Cannot open a directory\n");
+				}
+				else
+				{
+					FTAdd(file_name, mode);
+				}
 				return;
 			}
 			++index;

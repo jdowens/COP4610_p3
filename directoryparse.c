@@ -131,6 +131,20 @@ void PushPreviousDirectoryClusterNum(unsigned int clusterNum)
 	PREVIOUS_CLUSTER_STACK[PREVIOUS_CLUSTER_INDEX++] = clusterNum;
 }
 
+void PrintDirectoryVector(const struct DirectoryEntry* d)
+{
+	int i = 0;
+	printf("Directory Vector:\n--------------------------------\n");
+	for (i = 0; !d[i].END_OF_ARRAY; i++)
+	{
+		printf("DIR_Name: %s\n", d[i].DIR_Name);
+		printf("DIR_Attr: %x\n", d[i].DIR_Attr);
+		printf("DIR_FstClus: %x\n", d[i].DIR_FstClus);
+		printf("DIR_FileSize: %x\n", d[i].DIR_FileSize);
+		printf("--------------------------------\n");
+	}
+}
+
 unsigned int next_cluster(unsigned int current_cluster){
 	unsigned char temp1[4];
       	FILE* ImageFile= GetImageFile();
