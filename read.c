@@ -9,7 +9,7 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
                 if(FTIsOpenInRead(FILE_NAME)==0){
                         printf("Error: Cannot access this file.\n");
                         return;
-                }
+               }
 
                 //get dir names and sizes
                 int index = 0;
@@ -26,7 +26,8 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 			return;
         	}
 
-		if( (POSITION > directoryArray[index].DIR_FileSize) || (NUM_BYTES > directoryArray[index].DIR_FileSize)){
+		if( (POSITION > directoryArray[index].DIR_FileSize) || (NUM_BYTES > directoryArray[index].DIR_FileSize) || 
+( (POSITION+NUM_BYTES) > directoryArray[index].DIR_FileSize )){
 			printf("Error: Out of File Size.\n");
 			return;
 		}
@@ -102,7 +103,7 @@ void valid_file(const char* FILE_NAME){
                 }//end if
 		else{
 			//I think this checks if name is a directory
-			while(directoryArray[dir_index].DIR_Attr == 0x10 && !directoryArray[root_index].END_OF_ARRAY){
+			while(directoryArray[dir_index].DIR_Attr & 0x10 && !directoryArray[root_index].END_OF_ARRAY){
 				printf("%s ",directoryArray[root_index].DIR_Name);
 				cd(directoryArray[dir_index].DIR_Name);
 				for(cd_index = 0; !directoryArray[cd_index].END_OF_ARRAY; cd_index++){
