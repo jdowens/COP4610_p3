@@ -1,6 +1,5 @@
 #include "utility.h"
 
-unsigned int SectorNumber = 0;
 FILE* ImageFile = NULL;
 
 const int ENDOFCLUSTER = 268435448;
@@ -14,6 +13,7 @@ short BPB_FATSz32;
 
 // root directory
 short BPB_RootClus;
+unsigned int FAT_StartLoc, FAT_EndLoc;
 
 void OpenImageFile(const char* name)
 {
@@ -65,6 +65,8 @@ void ParseBootSector(void)
 {
     unsigned short store_bytes[4];
     unsigned char SPC[1];
+    int FATOffset, ThisFATSecNum;
+
     fseek(ImageFile, 11, SEEK_SET);
 	fread(store_bytes, sizeof(char), 2, ImageFile);		
 	BPB_BytesPerSector = store_bytes[0];
@@ -97,6 +99,14 @@ void ParseBootSector(void)
     printf("RootClus = %i\n", BPB_RootClus);
 
     FindFirstSectorOfCluster(BPB_RootClus);
+    
+
+    // calculate the starting location of the FAT table
+    FATOffset = BPB_RootClus * 4;
+    ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSector);
+    
+    FAT_StartLoc = ThisFATSecNum*BPB_BytesPerSector;
+    FAT_EndLoc = BPB_FATSz32 * BPB_BytesPerSector + FAT_StartLoc;
 }
 
 int FindFirstSectorOfCluster(int N)
@@ -107,14 +117,6 @@ int FindFirstSectorOfCluster(int N)
 //  printf("Byte address of Current Cluster: %x\n", DirLocation);
     return DirLocation;
 }
-
-unsigned int FAT_Start(){
-    int FATOffset = BPB_RootClus * 4;
-    int ThisFATSecNum =  BPB_RsvdSecCnt + (FATOffset / BPB_BytesPerSector);
-
-    return ThisFATSecNum*BPB_BytesPerSector;
-}
-
 
 unsigned int little_to_big(unsigned char *array, int bytes){
 	unsigned int ret = 0;
@@ -168,6 +170,44 @@ void WriteCharToImage(unsigned char value, unsigned int offset)
 	fputc(value, ImageFile);
 }
 
+unsigned int FindNextFreeCluster(void)
+{
+    unsigned int cluster_value;
+    unsigned short store_bytes[4];
+    unsigned int seek_pos = FAT_StartLoc;
+    unsigned int cluster_number = 0;
+    
+    do
+    {
+        fseek(ImageFile, seek_pos, SEEK_SET);
+        fread(store_bytes, sizeof(char), 4, ImageFile);
+        cluster_value = little_to_big(store_bytes, 4);
+        seek_pos += 4;
+        ++cluster_number;
+    }
+    while(cluster_value != 0x00000000 || seek_pos >= FAT_EndLoc);
+
+    if(seek_pos == FAT_EndLoc)
+    {
+        printf("ERROR: No available clusters, image is FULL.\n");
+        return;
+    }
+
+    cluster_number--;
+    printf("The next free cluster is at: %i\n", cluster_number);
+
+    return cluster_number;
+}
+
+unsigned int FAT_Start(void)
+{
+    return FAT_StartLoc;
+}
+
+unsigned int FAT_End(void)
+{
+    return FAT_EndLoc;
+}
 // NOTES:
 // 
 // FATOffset = N * 4

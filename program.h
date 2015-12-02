@@ -7,7 +7,7 @@
 #include "utility.h"
 #include "cd.h"
 #include "openclose.h"
-
+#include "ls.h"
 
 #define USER_INPUT_BUFFER_LENGTH 256
 
