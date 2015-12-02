@@ -26,8 +26,7 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 			return;
         	}
 
-		if( (POSITION > directoryArray[index].DIR_FileSize) || (NUM_BYTES > directoryArray[index].DIR_FileSize) || 
-( (POSITION+NUM_BYTES) > directoryArray[index].DIR_FileSize )){
+		if( (POSITION > directoryArray[index].DIR_FileSize) || (NUM_BYTES > directoryArray[index].DIR_FileSize) || ( (POSITION+NUM_BYTES) > directoryArray[index].DIR_FileSize )){
 			printf("Error: Out of File Size.\n");
 			return;
 		}
