@@ -28,7 +28,7 @@ void WriteIntToImage(unsigned int value, unsigned int offset);
 void WriteShortToImage(unsigned short value, unsigned int offset);
 void WriteCharToImage(unsigned char value, unsigned int offset);
 unsigned int FindNextFreeCluster(void);
-void UpdateFAT_Tables(unsigned int cluster_number, unsigned int next_cluster);
+void WriteToFAT(unsigned int cluster_number, unsigned int next_cluster);
 
 unsigned int FAT_Start();
 unsigned int FAT_End();

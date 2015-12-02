@@ -199,6 +199,14 @@ unsigned int FindNextFreeCluster(void)
     return cluster_number;
 }
 
+void WriteToFAT(unsigned int cluster_number, unsigned int next_cluster)
+{
+	unsigned int byteOffsetTable1 = FAT_Start()+cluster_number*4;
+	unsigned int byteOffsetTable2 = FAT_End()+cluster_number*4;
+	WriteIntToImage(next_cluster, byteOffsetTable1);
+	WriteIntToImage(next_cluster, byteOffsetTable2);
+}
+
 unsigned int FAT_Start(void)
 {
     return FAT_StartLoc;
