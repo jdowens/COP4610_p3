@@ -6,6 +6,11 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 		unsigned char temp[512];
 		struct DirectoryEntry* directoryArray = GetDirectoryContents(GetCurrentDirectoryClusterNum());
 
+                if(FTIsOpenInRead(FILE_NAME)==0){
+                        printf("Error: Cannot access this file.\n");
+                        return;
+                }
+
                 //get dir names and sizes
                 int index = 0;
                 for(index = 0; !directoryArray[index].END_OF_ARRAY; index++){
@@ -17,15 +22,10 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
                 }
 
         	if(directoryArray[index].END_OF_ARRAY){
-               		printf("Did not find the name.\n");
+               		printf("Error: Did not find the name.\n");
 			return;
         	}
-/*
-		if(FTIsOpenInRead(FILE_NAME)==0){
-			printf("Cannot access this file.\n");
-			return;
-		}
-*/
+
 		if( (POSITION > directoryArray[index].DIR_FileSize) || (NUM_BYTES > directoryArray[index].DIR_FileSize)){
 			printf("Error: Out of File Size.\n");
 			return;
