@@ -85,11 +85,28 @@ void RunProgram(void)
 				close(parsed_dir);
 			}
 		}
+		else if (strcmp(USER_INPUT[0], "read") == 0)
+		{
+			if (strcmp(USER_INPUT[1],". . . . .") == 0 ||
+			    strcmp(USER_INPUT[2],". . . . .") == 0 ||
+			    strcmp(USER_INPUT[3],". . . . .") == 0)
+			{
+				printf("Requires arguments for filename, position, and size\n");
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				read(parsed_dir, atoi(USER_INPUT[2]), atoi(USER_INPUT[3]));
+			}
+		}
 		else if (strcmp(USER_INPUT[0], "debug") == 0)
 		{
 			printf("CURRENT_CLUSTER: %d\n", GetCurrentDirectoryClusterNum());
 			printf("CURRENT_CLUSTER BYTE_ADDRESS: 0x%x\n", FindFirstSectorOfCluster(GetCurrentDirectoryClusterNum()));
 			FTPrint();
+			PrintDirectoryVector(GetDirectoryContents(GetCurrentDirectoryClusterNum()));
 		}
 	}
 }
