@@ -105,3 +105,16 @@ void ToStandardFormat(char * input)
    strcpy(input,temp);
 
 }
+
+char* DynStrPushBack(char* dest, char c)
+{
+	size_t total_len = strlen(dest) + 2;
+	char* new_str = (char*)calloc(total_len, sizeof(char));
+	strcpy(new_str, dest);
+	new_str[total_len-2] = c;
+	new_str[total_len-1] = '\0';
+	free(dest);
+	return new_str;
+}
+
+
