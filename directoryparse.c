@@ -140,6 +140,7 @@ void PrintDirectoryVector(const struct DirectoryEntry* d)
 		printf("DIR_Name: %s\n", d[i].DIR_Name);
 		printf("DIR_Attr: %x\n", d[i].DIR_Attr);
 		printf("DIR_FstClus: %x\n", d[i].DIR_FstClus);
+		printf("DIR_FstClusByteAddress: %x\n", FindFirstSectorOfCluster(d[i].DIR_FstClus));
 		printf("DIR_FileSize: %x\n", d[i].DIR_FileSize);
 		printf("--------------------------------\n");
 	}
