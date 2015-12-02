@@ -14,6 +14,7 @@ struct DirectoryEntry
 
 struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum);
 struct DirectoryEntry* DirectoryVectorPushBack(struct DirectoryEntry* vec, struct DirectoryEntry* file);
+void WriteDirectoryEntry(struct DirectoryEntry dir, unsigned int clusterNum);
 void PrintDirectoryVector(const struct DirectoryEntry* d);
 
 // this functions takes the string (in FAT-32 format) of a file, then returns which cluster this file
