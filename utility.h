@@ -27,7 +27,9 @@ unsigned char* big_to_little(unsigned int value, unsigned int size);
 void WriteIntToImage(unsigned int value, unsigned int offset);
 void WriteShortToImage(unsigned short value, unsigned int offset);
 void WriteCharToImage(unsigned char value, unsigned int offset);
+unsigned int FindNextFreeCluster(void);
 
 unsigned int FAT_Start();
+unsigned int FAT_End();
 
 #endif
