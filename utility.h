@@ -29,6 +29,7 @@ void WriteShortToImage(unsigned short value, unsigned int offset);
 void WriteCharToImage(unsigned char value, unsigned int offset);
 unsigned int FindNextFreeCluster(void);
 void WriteToFAT(unsigned int cluster_number, unsigned int next_cluster);
+unsigned int FindFirstFreeDirectoryEntry(unsigned int clusterNum);
 
 unsigned int FAT_Start();
 unsigned int FAT_End();

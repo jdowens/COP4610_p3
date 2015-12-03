@@ -111,6 +111,34 @@ void RunProgram(void)
 				read(parsed_dir, atoi(USER_INPUT[2]), atoi(USER_INPUT[3]));
 			}
 		}
+		else if (strcmp(USER_INPUT[0], "create") == 0)
+		{
+			if (strcmp(USER_INPUT[1],". . . . .") == 0)
+			{
+				printf("Requires an argument for the file name\n");
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				create(parsed_dir);
+			}
+		}
+		else if (strcmp(USER_INPUT[0], "mkdir") == 0)
+		{
+			if (strcmp(USER_INPUT[1],". . . . .") == 0)
+			{
+				printf("Requires an argument for the directory name\n");
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				mkdir(parsed_dir);
+			}
+		}
 		else if (strcmp(USER_INPUT[0], "debug") == 0)
 		{
 			printf("CURRENT_CLUSTER: %d\n", GetCurrentDirectoryClusterNum());

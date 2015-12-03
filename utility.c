@@ -195,6 +195,7 @@ unsigned int FindNextFreeCluster(void)
 
     cluster_number--;
     printf("The next free cluster is at: %i\n", cluster_number);
+    printf("The byte address is:%x\n", FindFirstSectorOfCluster(cluster_number));
 
     return cluster_number;
 }
@@ -205,6 +206,34 @@ void WriteToFAT(unsigned int cluster_number, unsigned int next_cluster)
 	unsigned int byteOffsetTable2 = FAT_End()+cluster_number*4;
 	WriteIntToImage(next_cluster, byteOffsetTable1);
 	WriteIntToImage(next_cluster, byteOffsetTable2);
+}
+
+unsigned int FindFirstFreeDirectoryEntry(unsigned int clusterNum)
+{
+	unsigned int currentClusterIndex = clusterNum;
+	unsigned int previousClusterIndex = clusterNum;
+	do
+	{
+		unsigned int byteStart = FindFirstSectorOfCluster(currentClusterIndex);
+		unsigned int byteOffset = 0;
+		char rawData[1];
+		do
+		{
+			fseek(ImageFile, byteStart + byteOffset, SEEK_SET);
+			fread(rawData, sizeof(char), 1, ImageFile);
+			byteOffset += 32;
+		} while (*rawData != 0xE5 && *rawData != 0x00 && byteOffset < GetBytesPerSec()*GetSecPerClus());
+		if (*rawData == 0xE5 || *rawData == 0x00)
+		{
+			return byteStart+byteOffset-32;
+		}
+		previousClusterIndex = currentClusterIndex;
+		currentClusterIndex = next_cluster(currentClusterIndex);
+	} while (currentClusterIndex < 0x0FFFFFF8);
+	unsigned int allocatedCluster = FindNextFreeCluster();
+	WriteToFAT(previousClusterIndex, allocatedCluster);
+	WriteToFAT(allocatedCluster, 0x0FFFFFF8);
+	return FindFirstSectorOfCluster(allocatedCluster);
 }
 
 unsigned int FAT_Start(void)
