@@ -12,6 +12,8 @@
 #include "read.h"
 #include "parseinput.h"
 #include "create.h"
+#include "mkdir.h"
+#include "rm.h"
 
 
 #define USER_INPUT_BUFFER_LENGTH 256

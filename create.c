@@ -3,7 +3,7 @@
 void create(const char* name)
 {
 	struct DirectoryEntry* tmp = GetDirectoryContents(GetCurrentDirectoryClusterNum());
-
+	
 	int i;
 	for (i = 0; !tmp[i].END_OF_ARRAY; i++)
 	{

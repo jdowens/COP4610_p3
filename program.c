@@ -117,6 +117,14 @@ void RunProgram(void)
 			{
 				printf("Requires an argument for the file name\n");
 			}
+			else if (strcmp(USER_INPUT[1],".") == 0)
+			{
+				printf("Invalid file name\n");
+			}
+			else if (strcmp(USER_INPUT[1],"..") == 0)
+			{
+				printf("Invalid file name\n");
+			}
 			else
 			{
 				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
@@ -131,12 +139,64 @@ void RunProgram(void)
 			{
 				printf("Requires an argument for the directory name\n");
 			}
+			else if (strcmp(USER_INPUT[1],".") == 0)
+			{
+				printf("Invalid directory name\n");
+			}
+			else if (strcmp(USER_INPUT[1],"..") == 0)
+			{
+				printf("Invalid directory name\n");
+			}	
 			else
 			{
 				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
 				strcpy(parsed_dir, USER_INPUT[1]);
 				ToFAT32(parsed_dir);
 				mkdir(parsed_dir);
+			}
+		}
+		else if (strcmp(USER_INPUT[0], "rm") == 0)
+		{
+			if (strcmp(USER_INPUT[1],". . . . .") == 0)
+			{
+				printf("Requires an argument for the file name\n");
+			}
+			else if (strcmp(USER_INPUT[1],".") == 0)
+			{
+				printf("Invalid file name\n");
+			}
+			else if (strcmp(USER_INPUT[1],"..") == 0)
+			{
+				printf("Invalid file name\n");
+			}	
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				rm(parsed_dir);
+			}
+		}
+		else if (strcmp(USER_INPUT[0], "rmdir") == 0)
+		{
+			if (strcmp(USER_INPUT[1],". . . . .") == 0)
+			{
+				printf("Requires an argument for the directory name\n");
+			}
+			else if (strcmp(USER_INPUT[1],".") == 0)
+			{
+				printf("Invalid directory name\n");
+			}
+			else if (strcmp(USER_INPUT[1],"..") == 0)
+			{
+				printf("Invalid directory name\n");
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				rmdir(parsed_dir);
 			}
 		}
 		else if (strcmp(USER_INPUT[0], "debug") == 0)

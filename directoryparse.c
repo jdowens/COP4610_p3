@@ -32,9 +32,10 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 		
 			// if first byte 0x00 or 0xE5 (slide 10 of Slides_Week12.ppt)
 			// then end of directory
-			if (rawData[0] == 0x00 || rawData[0] == 0xE5)
+			if (rawData[0] == 0x00 || (unsigned char)rawData[0] == 0xE5)
 			{
-		
+				byteIndexOffset += 32;
+				continue;
 			}
 			else
 			{
@@ -71,6 +72,7 @@ struct DirectoryEntry* GetDirectoryContents(unsigned int clusterNum)
 					printf("DIR_ByteOffset: %x\n", FindFirstSectorOfCluster(returnArray[index].DIR_FstClus));
 					printf("DIR_FileSize: %x\n", returnArray[index].DIR_FileSize);
 					printf("\n");*/
+					returnArray[index].DIR_EntryByteAddress = byteIndex+byteIndexOffset;
 					returnArray[index++].END_OF_ARRAY = 0;
 				}
 			}

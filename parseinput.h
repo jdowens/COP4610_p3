@@ -1,5 +1,6 @@
 #ifndef _parseinput_H
 #define _parseinput_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
