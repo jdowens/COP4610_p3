@@ -127,7 +127,7 @@ void RunProgram(void)
 		}
 		else if (strcmp(USER_INPUT[0], "mkdir") == 0)
 		{
-			if (strcpy(USER_INPUT[1],". . . . .") == 0)
+			if (strcmp(USER_INPUT[1],". . . . .") == 0)
 			{
 				printf("Requires an argument for the directory name\n");
 			}
