@@ -94,7 +94,7 @@ void rmdir (char * dirname)
 void RemoveFromFAT(unsigned int cluster_number)
 {
    // might need dynamic array here
-   unsigned int clusterNums[512];
+   unsigned int clusterNums[2048];
    unsigned short index = 0;
    unsigned int temp = cluster_number;
 
