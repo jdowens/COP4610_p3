@@ -195,6 +195,7 @@ unsigned int FindNextFreeCluster(void)
 
     cluster_number--;
     printf("The next free cluster is at: %i\n", cluster_number);
+    printf("The byte address is:%x\n", FindFirstSectorOfCluster(cluster_number));
 
     return cluster_number;
 }
@@ -215,7 +216,7 @@ unsigned int FindFirstFreeDirectoryEntry(unsigned int clusterNum)
 	{
 		unsigned int byteStart = FindFirstSectorOfCluster(currentClusterIndex);
 		unsigned int byteOffset = 0;
-		char* rawData = NULL;
+		char rawData[1];
 		do
 		{
 			fseek(ImageFile, byteStart + byteOffset, SEEK_SET);
