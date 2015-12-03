@@ -117,6 +117,14 @@ void RunProgram(void)
 			{
 				printf("Requires an argument for the file name\n");
 			}
+			else if (strcmp(USER_INPUT[1],".") == 0)
+			{
+				printf("Invalid file name\n");
+			}
+			else if (strcmp(USER_INPUT[1],"..") == 0)
+			{
+				printf("Invalid file name\n");
+			}
 			else
 			{
 				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
@@ -131,6 +139,14 @@ void RunProgram(void)
 			{
 				printf("Requires an argument for the directory name\n");
 			}
+			else if (strcmp(USER_INPUT[1],".") == 0)
+			{
+				printf("Invalid directory name\n");
+			}
+			else if (strcmp(USER_INPUT[1],"..") == 0)
+			{
+				printf("Invalid directory name\n");
+			}	
 			else
 			{
 				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
@@ -145,6 +161,14 @@ void RunProgram(void)
 			{
 				printf("Requires an argument for the file name\n");
 			}
+			else if (strcmp(USER_INPUT[1],".") == 0)
+			{
+				printf("Invalid file name\n");
+			}
+			else if (strcmp(USER_INPUT[1],"..") == 0)
+			{
+				printf("Invalid file name\n");
+			}	
 			else
 			{
 				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
@@ -158,6 +182,14 @@ void RunProgram(void)
 			if (strcmp(USER_INPUT[1],". . . . .") == 0)
 			{
 				printf("Requires an argument for the directory name\n");
+			}
+			else if (strcmp(USER_INPUT[1],".") == 0)
+			{
+				printf("Invalid directory name\n");
+			}
+			else if (strcmp(USER_INPUT[1],"..") == 0)
+			{
+				printf("Invalid directory name\n");
 			}
 			else
 			{
