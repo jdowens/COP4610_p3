@@ -111,17 +111,19 @@ void RunProgram(void)
 				read(parsed_dir, atoi(USER_INPUT[2]), atoi(USER_INPUT[3]));
 			}
 		}
-		else if (strcmp(USER_INPUT[0], "test") == 0)
+		else if (strcmp(USER_INPUT[0], "create") == 0)
 		{
-			struct DirectoryEntry ent;
-			char parsed_dir[USER_INPUT_BUFFER_LENGTH];
-			strcpy(parsed_dir, USER_INPUT[1]);
-			ToFAT32(parsed_dir);
-			strcpy(ent.DIR_Name, parsed_dir);
-			ent.DIR_Attr = 0x20;
-			ent.DIR_FstClus = 0x1234;
-			ent.DIR_FileSize = 0x0000;
-			WriteDirectoryEntry(ent, GetCurrentDirectoryClusterNum());
+			if (strcmp(USER_INPUT[1],". . . . .") == 0)
+			{
+				printf("Requires an argument for the file name\n");
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				create(parsed_dir);
+			}
 		}
 		else if (strcmp(USER_INPUT[0], "debug") == 0)
 		{
