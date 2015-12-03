@@ -133,7 +133,7 @@ void PushPreviousDirectoryClusterNum(unsigned int clusterNum)
 
 void WriteDirectoryEntry(struct DirectoryEntry dir, unsigned int clusterNum)
 {
-/*	unsigned int byteOffset = FindFirstFreeDirectoryEntry(clusterNum);
+	unsigned int byteOffset = FindFirstFreeDirectoryEntry(clusterNum);
 	int i;
 	for (i = 0; i < 11; i++)
 	{
@@ -142,10 +142,9 @@ void WriteDirectoryEntry(struct DirectoryEntry dir, unsigned int clusterNum)
 	unsigned int DIR_FstClusLO = dir.DIR_FstClus&0x00FF;
 	unsigned int DIR_FstClusHI = dir.DIR_FstClus>>16;
 	WriteShortToImage(DIR_FstClusLO, byteOffset+26);
-	WriteShortToImage(DIR_FSTClusHI, byteOffset+20);
+	WriteShortToImage(DIR_FstClusHI, byteOffset+20);
 	WriteCharToImage(dir.DIR_Attr, byteOffset+11);
 	WriteIntToImage(dir.DIR_FileSize, byteOffset+28);
-*/
 }
 
 void PrintDirectoryVector(const struct DirectoryEntry* d)

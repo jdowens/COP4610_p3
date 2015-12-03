@@ -207,6 +207,34 @@ void WriteToFAT(unsigned int cluster_number, unsigned int next_cluster)
 	WriteIntToImage(next_cluster, byteOffsetTable2);
 }
 
+unsigned int FindFirstFreeDirectoryEntry(unsigned int clusterNum)
+{
+	unsigned int currentClusterIndex = clusterNum;
+	unsigned int previousClusterIndex = clusterNum;
+	do
+	{
+		unsigned int byteStart = FindFirstSectorOfCluster(currentClusterIndex);
+		unsigned int byteOffset = 0;
+		char* rawData = NULL;
+		do
+		{
+			fseek(ImageFile, byteStart + byteOffset, SEEK_SET);
+			fread(rawData, sizeof(char), 1, ImageFile);
+			byteOffset += 32;
+		} while (*rawData != 0xE5 && *rawData != 0x00 && byteOffset < GetBytesPerSec()*GetSecPerClus());
+		if (*rawData == 0xE5 || *rawData == 0x00)
+		{
+			return byteStart+byteOffset-32;
+		}
+		previousClusterIndex = currentClusterIndex;
+		currentClusterIndex = next_cluster(currentClusterIndex);
+	} while (currentClusterIndex < 0x0FFFFFF8);
+	unsigned int allocatedCluster = FindNextFreeCluster();
+	WriteToFAT(previousClusterIndex, allocatedCluster);
+	WriteToFAT(allocatedCluster, 0x0FFFFFF8);
+	return FindFirstSectorOfCluster(allocatedCluster);
+}
+
 unsigned int FAT_Start(void)
 {
     return FAT_StartLoc;
