@@ -110,7 +110,20 @@ void RemoveFromFAT(unsigned int cluster_number)
    // pop cluster numbers and set to 0
    for(int i = index-1; i >= 0; i--)
    {
+       ZeroDataEntry(clusterNums[i]);
        WriteToFAT(clusterNums[i], 0);
    }
 }
 
+void ZeroDataEntry(unsigned int clusterNum)
+{
+	FILE* ImageFile = GetImageFile();
+	unsigned int byteAddress = FindFirstSectorOfCluster(clusterNum);
+	unsigned int numBytes = GetBytesPerSec()*GetSecPerClus();
+	fseek(ImageFile, byteAddress, SEEK_SET);
+	unsigned int i;
+	for (i = 0; i < numBytes; i++)
+	{
+		fputc('\0', ImageFile);
+	}
+}
