@@ -20,8 +20,8 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
                 int index = 0;
                 for(index = 0; !directoryArray[index].END_OF_ARRAY; index++){
                         if( strcmp( FILE_NAME,directoryArray[index].DIR_Name ) == 0 ){
-                                printf("File Name: %s\n",directoryArray[index].DIR_Name);
-                                printf("File size: %d\n\n",directoryArray[index].DIR_FileSize);
+                                //printf("File Name: %s\n",directoryArray[index].DIR_Name);
+                                //printf("File size: %d\n\n",directoryArray[index].DIR_FileSize);
                                 break;
                         }
                 }

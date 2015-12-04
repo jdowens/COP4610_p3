@@ -275,7 +275,7 @@ void GetUserInput(void)
 				tmp = fgetc(stdin);
 			}
 		}
-		printf("%s\n", USER_INPUT[user_vector_index]);
+		//printf("%s\n", USER_INPUT[user_vector_index]);
 		user_vector_index++;
 	}while (tmp != '\n' && tmp != '\0' && user_vector_index < 5);
 

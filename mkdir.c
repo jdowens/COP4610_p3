@@ -18,6 +18,8 @@ void mkdir(const char* name)
 	strcpy(ent.DIR_Name, name);
 	ent.DIR_Attr = 0x10;
 	unsigned int firstCluster = FindNextFreeCluster();
+	if (firstCluster == 0xFFFFFFFF)
+		return;
 	WriteToFAT(firstCluster, 0x0FFFFFF8);
 	ent.DIR_FstClus = firstCluster;
 	ent.DIR_FileSize = 0x0000;

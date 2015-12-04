@@ -36,7 +36,7 @@ void rm (char * fname)
     WriteCharToImage(EMPTY_BYTE, tmp[i].DIR_EntryByteAddress);
     firstClusterNum = tmp[i].DIR_FstClus;
     RemoveFromFAT(firstClusterNum);
-    printf("firstFClusterNum %i\n", firstClusterNum); 
+    //printf("firstFClusterNum %i\n", firstClusterNum); 
 }
 
 void rmdir (char * dirname)
@@ -88,13 +88,13 @@ void rmdir (char * dirname)
     WriteCharToImage(EMPTY_BYTE, tmp[i].DIR_EntryByteAddress);
     firstClusterNum = tmp[i].DIR_FstClus;
     RemoveFromFAT(firstClusterNum);
-    printf("firstFClusterNum %i\n", firstClusterNum); 
+    //printf("firstFClusterNum %i\n", firstClusterNum); 
 }
 
 void RemoveFromFAT(unsigned int cluster_number)
 {
    // might need dynamic array here
-   unsigned int clusterNums[2048];
+   unsigned int clusterNums[65536];
    unsigned short index = 0;
    unsigned int temp = cluster_number;
 

@@ -70,33 +70,33 @@ void ParseBootSector(void)
     fseek(ImageFile, 11, SEEK_SET);
 	fread(store_bytes, sizeof(char), 2, ImageFile);		
 	BPB_BytesPerSector = store_bytes[0];
-	printf("BytesPSec: %i\n", BPB_BytesPerSector);
+	//printf("BytesPSec: %i\n", BPB_BytesPerSector);
 
     fseek(ImageFile, 13, SEEK_SET);
     fread(SPC, sizeof(char), 1, ImageFile);
     BPB_SecPerClus = little_to_big(SPC, 1);
-    printf("SPC: %i\n", BPB_SecPerClus);
+    //printf("SPC: %i\n", BPB_SecPerClus);
 
     fseek(ImageFile, 14, SEEK_SET);
     fread(store_bytes, sizeof(char), 2, ImageFile);
     BPB_RsvdSecCnt = little_to_big(store_bytes, 2);
-    printf("RsvdSecCnt = %i\n", BPB_RsvdSecCnt);
+    //printf("RsvdSecCnt = %i\n", BPB_RsvdSecCnt);
 
     fseek(ImageFile, 16, SEEK_SET);
     fread(store_bytes, sizeof(char), 1, ImageFile);
     BPB_NumFats = little_to_big(store_bytes, 1);
-    printf("NumFats = %i\n", BPB_NumFats);
+    //printf("NumFats = %i\n", BPB_NumFats);
 
     fseek(ImageFile, 36, SEEK_SET);
     fread(store_bytes, sizeof(char), 4, ImageFile);
     BPB_FATSz32 = little_to_big(store_bytes, 4);
-    printf("FATSz32 = %i\n", BPB_FATSz32);
+    //printf("FATSz32 = %i\n", BPB_FATSz32);
     
     // root clus
     fseek(ImageFile, 44, SEEK_SET);
     fread(store_bytes, sizeof(char), 4, ImageFile);
     BPB_RootClus = little_to_big(store_bytes, 4);
-    printf("RootClus = %i\n", BPB_RootClus);
+    //printf("RootClus = %i\n", BPB_RootClus);
 
     FindFirstSectorOfCluster(BPB_RootClus);
     
@@ -131,7 +131,7 @@ unsigned int little_to_big(unsigned char *array, int bytes){
 unsigned char* big_to_little(unsigned int value, unsigned int size)
 {
 	static unsigned char ret[4];
-	printf("%016llX\n", ret);
+	//printf("%016llX\n", ret);
 	memset(ret, 0, 4);
 	unsigned int i = 0;
 	unsigned int mask = 0x000000FF;
@@ -190,12 +190,12 @@ unsigned int FindNextFreeCluster(void)
     if(seek_pos == FAT_EndLoc)
     {
         printf("ERROR: No available clusters, image is FULL.\n");
-	return;
+	return 0xFFFFFFFF;
     }
 
     cluster_number--;
-    printf("The next free cluster is at: %i\n", cluster_number);
-    printf("The byte address is:%x\n", FindFirstSectorOfCluster(cluster_number));
+    //printf("The next free cluster is at: %i\n", cluster_number);
+    //printf("The byte address is:%x\n", FindFirstSectorOfCluster(cluster_number));
 
     return cluster_number;
 }

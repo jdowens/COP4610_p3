@@ -7,6 +7,18 @@ void write(const char* FILE_NAME, int POSITION, int NUM_BYTES, const char* STRIN
 	int index = 0;
 	int found = 0;
 	FILE* ImageFile = GetImageFile();
+
+	if (FTIsOpen(FILE_NAME) == 0)
+	{
+		printf("File not open\n");
+		return;
+	}	
+	if (FTIsOpenInWrite(FILE_NAME) == 0)
+	{
+		printf("File not open in write mode\n");
+		return;
+	}
+
 	for (index = 0; !directoryArray[index].END_OF_ARRAY; index++)
 	{
 		if (strcmp(FILE_NAME, directoryArray[index].DIR_Name) == 0)
@@ -45,6 +57,41 @@ void write(const char* FILE_NAME, int POSITION, int NUM_BYTES, const char* STRIN
 	unsigned int end_position = POSITION + NUM_BYTES - 1;
 
 	// allocate needed clusters
+	unsigned int buffer[65536];
+	unsigned int buffIt = 0;
+	unsigned int flag = 0;
+
+	while (end_position >= bytes_per_clus)
+	{
+		previousClusterNum = clusterNum;
+		clusterNum = next_cluster(clusterNum);
+		end_position -= bytes_per_clus;
+		if (clusterNum >= 0x0FFFFFF8)
+		{
+			if (flag == 0)
+			{
+				buffer[buffIt++] = previousClusterNum;
+				flag = 1;
+			}
+			int next_free_cluster = FindNextFreeCluster();//find next free cluster
+
+			if (next_free_cluster == 0xFFFFFFFF)
+			{
+				for (buffIt; buffIt > 0; buffIt--)
+				{
+					WriteToFAT(buffer[buffIt], 0);	
+				}
+				WriteToFAT(buffer[0], 0x0FFFFFF8);
+				return;
+			}
+			WriteToFAT(previousClusterNum, next_free_cluster);//update FAT
+			WriteToFAT(next_free_cluster, 0x0ffffff8);//update FAT
+
+			clusterNum = next_cluster(previousClusterNum);
+			buffer[buffIt++] = clusterNum;
+		}
+	}
+/*
 	while (end_position >= bytes_per_clus)
 	{
 		previousClusterNum = clusterNum;
@@ -56,6 +103,7 @@ void write(const char* FILE_NAME, int POSITION, int NUM_BYTES, const char* STRIN
 			clusterNum = next_cluster(previousClusterNum);
 		}
 	}
+*/
 
 	// find starting byteAddress
 	clusterNum = directoryArray[index].DIR_FstClus;
@@ -163,7 +211,7 @@ void update_filesize(unsigned int address,struct DirectoryEntry* directoryArray,
 	 //WriteIntToImage(directoryArray[index].DIR_FileSize,address+28);
 	 //printf("New File Size: %s %d\n",directoryArray[index].DIR_Name,directoryArray[index].DIR_FileSize);
 	 WriteIntToImage(newSize, address+28);
-	 printf("New File Size: %d\n", newSize);
+	 //printf("New File Size: %d\n", newSize);
 }
 
 void TestWrite(){
