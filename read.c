@@ -5,7 +5,7 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 	        int cluster_number = NameToClusterNumber(FILE_NAME);
 		unsigned char temp[512];
 		struct DirectoryEntry* directoryArray = GetDirectoryContents(GetCurrentDirectoryClusterNum());
-
+/*
 		if(FTIsOpen(FILE_NAME)==0){
 			printf("Error: File is not open.\n");
                         return;
@@ -14,7 +14,7 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
                         printf("Error: Cannot access this file.\n");
                         return;
                }
-
+*/
                 //get dir names and sizes
                 int index = 0;
                 for(index = 0; !directoryArray[index].END_OF_ARRAY; index++){
@@ -51,9 +51,8 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 					//read to the end of sector then read from beginning of next sector
 					fread(temp,sizeof(unsigned char),bytes_read,ImageFile);
                          		int index = 0;
-                         		printf("Array in hex: ");
                          		for(index = 0; index < bytes_read; index++){
-                                  		printf("%x ",temp[index]);
+                                  		printf("%c",temp[index]);
                          		}//end for
 					cluster_number = next_cluster(cluster_number);
 					NUM_BYTES = NUM_BYTES - bytes_read;
@@ -63,7 +62,7 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 						//read entire sector
                                             	fread(temp,sizeof(unsigned char),512,ImageFile); 
                                         	for(index = 0; index < 512; index++){
-                                                	printf("%x ",temp[index]);
+                                                	printf("%c",temp[index]);
                                         	}//end for
 						cluster_number = next_cluster(cluster_number);
 						NUM_BYTES = NUM_BYTES - 512;
@@ -73,9 +72,8 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
                                         //read entire sector
                                        	fread(temp,sizeof(unsigned char),NUM_BYTES,ImageFile);
 	                                for(index = 0; index < NUM_BYTES; index++){
-                                                printf("%x ",temp[index]);
+                                                printf("%c",temp[index]);
                                         }//end for
-					printf("\n");
 				}//end if
 				//read one sector only
 				else{
@@ -83,9 +81,8 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
                 			fseek(ImageFile,FindFirstSectorOfCluster(cluster_number)+POSITION,SEEK_SET);
                 			fread(temp,sizeof(unsigned char),NUM_BYTES,ImageFile);
 					for(index = 0; index < NUM_BYTES; index++){
-                                                printf("%x ",temp[index]);
+                                                printf("%c",temp[index]);
                                         }//end for
-					printf("\n");
 				}//end else
 		}//end of else
 }
@@ -125,11 +122,12 @@ void valid_file(const char* FILE_NAME){
 
 
 void TestRead(){
-	int NUM_BYTES = 5;
-	int POSITION = 3;
-	const char* TempFileName = "XL_DATA    ";
-	cd("BLUE       ");
-	cd("BLUE2      ");
+	int NUM_BYTES = 10;
+	int POSITION = 0;
+//	const char* TempFileName = "XL_DATA    ";
+//	cd("BLUE       ");
+//	cd("BLUE2      ");
 //	valid_file(TempFileName);
+	const char* TempFileName = "A          ";
 	read(TempFileName,POSITION,NUM_BYTES);
 }
