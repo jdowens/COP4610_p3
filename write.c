@@ -3,93 +3,96 @@
 const char* SPACE=" ";
 
 void write(const char* FILE_NAME, int POSITION, int NUM_BYTES, const char* STRING){
-	int cluster_number = NameToClusterNumber(FILE_NAME);
 	struct DirectoryEntry* directoryArray = GetDirectoryContents(GetCurrentDirectoryClusterNum());
-	int index=0;
-	int num_spaces=0;
-
-	//if no errors get the index of the file
-	index = error_check(FILE_NAME,directoryArray,POSITION,NUM_BYTES,STRING);
-	unsigned int old_FileSize = directoryArray[index].DIR_FileSize;
-	unsigned int address = directoryArray[index].DIR_EntryByteAddress;
-	printf("A byte address: %x\n", FindFirstSectorOfCluster(cluster_number));
-
-	//if(POSITION > directoryArray[index].DIR_FileSize){
-		num_spaces = POSITION - directoryArray[index].DIR_FileSize;
-	//	int spacing_index;
-        //       for(spacing_index=0; spacing_index < num_spaces; spacing_index++){
-        //                write_at_position(0,old_FileSize+spacing_index,1,cluster_number,SPACE);
-	//		if(cluster_number >= 0x0ffffff8){
-
-	//		}//end if
-        //        }//end for
-	//}//end if
-
-	if (num_spaces > 0)
+	int index = 0;
+	int found = 0;
+	FILE* ImageFile = GetImageFile();
+	for (index = 0; !directoryArray[index].END_OF_ARRAY; index++)
 	{
-		char* spaceArray = (char*)calloc(num_spaces+1, sizeof(char));
-		memset(spaceArray, ' ', num_spaces);
-		spaceArray[num_spaces] = '\0';
-
-		write(FILE_NAME, old_FileSize, num_spaces, spaceArray);
-		free(spaceArray);
+		if (strcmp(FILE_NAME, directoryArray[index].DIR_Name) == 0)
+		{
+			if (directoryArray[index].DIR_Attr & 0x10)
+			{
+				printf("Cannot write to directory!\n");
+				return;
+			}
+			found = 1;
+			break;
+		}
 	}
-        //add the number of written bytes to file size
-        update_filesize(address,directoryArray,index,NUM_BYTES,POSITION, num_spaces);
 
-	if(POSITION >= 512){
-                //while statement will  go the the cluster with the starting position
-                while(POSITION >= 512){
-                        cluster_number = next_cluster(cluster_number);
-                        POSITION = POSITION - 512;
-                }//end while
-        }//end if
+	if (!found)
+	{
+		printf("File not found!\n");
+		return;
+	}
 
-	if(POSITION+NUM_BYTES >= 512){
-		int bytes_write=512-POSITION;
-		write_at_position(0,POSITION,bytes_write,cluster_number,STRING);
-		NUM_BYTES -= bytes_write;
-		cluster_number = next_cluster(cluster_number);
-		while(cluster_number < 0x0ffffff8 && NUM_BYTES >= 512){
-			write_at_position(bytes_write,0,512,cluster_number,STRING);
-			bytes_write += 512;
-			NUM_BYTES -= 512;
-			if(next_cluster(cluster_number) >= 0x0ffffff8){
-				break;
-			}
-			cluster_number = next_cluster(cluster_number);
-		}//end while
+	unsigned int clusterNum = directoryArray[index].DIR_FstClus;
+	unsigned int previousClusterNum = clusterNum;
+	int numSpaces = POSITION - directoryArray[index].DIR_FileSize;
+	if (numSpaces < 0)
+		numSpaces = 0;
 
-//		if(NUM_BYTES <= 512){//filled out the last cluster chain and no more bytes
-//			 //write_at_position(bytes_write,0,512,cluster_number,STRING);//update fil
-//			return;
-//		}//end if
-//		else{//write to end of the last cluster chaiN
-//
-			//write_at_position(bytes_write,0,512,cluster_number,STRING);
-                        //bytes_write += 512;
-                        //NUM_BYTES -= 512;
-			//add nother cluster and continue to write
-			if(NUM_BYTES >=512){
-				while(NUM_BYTES >= 512){
-                                	add_cluster(cluster_number);
-                                	write_at_position(bytes_write,0,512,cluster_number,STRING);
-                                	NUM_BYTES -= 512;
-                                	bytes_write +=512;
-                                	cluster_number = next_cluster(cluster_number);
-                        	}//end while
-                                add_cluster(cluster_number);
-                                write_at_position(bytes_write,0,NUM_BYTES,cluster_number,STRING);
-			}//end if
-			else{
-				write_at_position(bytes_write,0,NUM_BYTES,cluster_number,STRING);
-			}
-//		}//end else
-	}//end if
-	else{
-		write_at_position(0,POSITION,NUM_BYTES,cluster_number,STRING);
-		//update file size
-	}//end else
+	update_filesize(directoryArray[index].DIR_EntryByteAddress,
+			directoryArray,
+			index,
+			NUM_BYTES,
+			POSITION,
+			0);
+	
+	unsigned int bytesToWrite = NUM_BYTES + numSpaces;
+	unsigned int bytes_per_clus = GetSecPerClus()*GetBytesPerSec();
+	unsigned int end_position = POSITION + NUM_BYTES - 1;
+
+	// allocate needed clusters
+	while (end_position >= bytes_per_clus)
+	{
+		previousClusterNum = clusterNum;
+		clusterNum = next_cluster(clusterNum);
+		end_position -= bytes_per_clus;
+		if (clusterNum >= 0x0FFFFFF8)
+		{
+			add_cluster(previousClusterNum);
+			clusterNum = next_cluster(previousClusterNum);
+		}
+	}
+
+	// find starting byteAddress
+	clusterNum = directoryArray[index].DIR_FstClus;
+	unsigned int start_position = (numSpaces > 0) ? directoryArray[index].DIR_FileSize : POSITION;
+	while (start_position >= bytes_per_clus)
+	{
+		clusterNum = next_cluster(clusterNum);
+		start_position -= bytes_per_clus;
+	}
+
+	unsigned int byteAddress = FindFirstSectorOfCluster(clusterNum)+start_position;
+	fseek(ImageFile, byteAddress, SEEK_SET);
+	unsigned int strIt = 0;
+	unsigned int clusterIt = start_position;
+
+	while(bytesToWrite)
+	{
+		if (numSpaces)
+		{
+			fputc(' ', ImageFile);
+			numSpaces--;
+		}
+		else
+		{
+			fputc(STRING[strIt], ImageFile);
+			strIt++;
+		}
+		clusterIt++;
+		if (clusterIt >= bytes_per_clus)
+		{
+			clusterNum = next_cluster(clusterNum);
+			byteAddress = FindFirstSectorOfCluster(clusterNum);
+			fseek(ImageFile, byteAddress, SEEK_SET);
+			clusterIt = 0;
+		}
+		bytesToWrite--;
+	}
 }//end write
 
 void add_cluster(int cluster_number){

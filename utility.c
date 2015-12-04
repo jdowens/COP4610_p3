@@ -190,7 +190,7 @@ unsigned int FindNextFreeCluster(void)
     if(seek_pos == FAT_EndLoc)
     {
         printf("ERROR: No available clusters, image is FULL.\n");
-        return;
+	return;
     }
 
     cluster_number--;
