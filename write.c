@@ -14,14 +14,26 @@ void write(const char* FILE_NAME, int POSITION, int NUM_BYTES, const char* STRIN
 	unsigned int address = directoryArray[index].DIR_EntryByteAddress;
 	printf("A byte address: %x\n", FindFirstSectorOfCluster(cluster_number));
 
-	if(POSITION > directoryArray[index].DIR_FileSize){
+	//if(POSITION > directoryArray[index].DIR_FileSize){
 		num_spaces = POSITION - directoryArray[index].DIR_FileSize;
-		int spacing_index;
-                for(spacing_index=0; spacing_index < num_spaces; spacing_index++){
-                        write_at_position(0,old_FileSize+spacing_index,1,cluster_number,SPACE);
-                }//end for
-	}//end if
+	//	int spacing_index;
+        //       for(spacing_index=0; spacing_index < num_spaces; spacing_index++){
+        //                write_at_position(0,old_FileSize+spacing_index,1,cluster_number,SPACE);
+	//		if(cluster_number >= 0x0ffffff8){
 
+	//		}//end if
+        //        }//end for
+	//}//end if
+
+	if (num_spaces > 0)
+	{
+		char* spaceArray = (char*)calloc(num_spaces+1, sizeof(char));
+		memset(spaceArray, ' ', num_spaces);
+		spaceArray[num_spaces] = '\0';
+
+		write(FILE_NAME, old_FileSize, num_spaces, spaceArray);
+		free(spaceArray);
+	}
         //add the number of written bytes to file size
         update_filesize(address,directoryArray,index,NUM_BYTES,POSITION, num_spaces);
 
@@ -42,27 +54,32 @@ void write(const char* FILE_NAME, int POSITION, int NUM_BYTES, const char* STRIN
 			write_at_position(bytes_write,0,512,cluster_number,STRING);
 			bytes_write += 512;
 			NUM_BYTES -= 512;
+			if(next_cluster(cluster_number) >= 0x0ffffff8){
+				break;
+			}
 			cluster_number = next_cluster(cluster_number);
 		}//end while
-		if(NUM_BYTES <= 512){//filled out the last cluster chain and no more bytes
-			 write_at_position(bytes_write,0,512,cluster_number,STRING);//update file size
-			return;
-		}//end if
-		else{//write to end of the last cluster chain
-			write_at_position(bytes_write,0,512,cluster_number,STRING);
-                        bytes_write += 512;
-                        NUM_BYTES -= 512;
+//		if(NUM_BYTES <= 512){//filled out the last cluster chain and no more bytes
+//			 //write_at_position(bytes_write,0,512,cluster_number,STRING);//update fil
+//			return;
+//		}//end if
+//		else{//write to end of the last cluster chaiN
 			//add nother cluster and continue to write
-			while(NUM_BYTES >= 512){
-                                add_cluster(cluster_number);
-                                write_at_position(bytes_write,0,512,cluster_number,STRING);
-                                NUM_BYTES -= 512;
-                                bytes_write +=512;
-                                cluster_number = next_cluster(cluster_number);
-                        }//end while
+			if(NUM_BYTES >=512){
+				while(NUM_BYTES >= 512){
+                                	add_cluster(cluster_number);
+                                	write_at_position(bytes_write,0,512,cluster_number,STRING);
+                                	NUM_BYTES -= 512;
+                                	bytes_write +=512;
+                                	cluster_number = next_cluster(cluster_number);
+                        	}//end while
                                 add_cluster(cluster_number);
                                 write_at_position(bytes_write,0,NUM_BYTES,cluster_number,STRING);
-		}//end else
+			}//end if
+			else{
+				write_at_position(bytes_write,0,NUM_BYTES,cluster_number,STRING);
+			}
+//		}//end else
 	}//end if
 	else{
 		write_at_position(0,POSITION,NUM_BYTES,cluster_number,STRING);

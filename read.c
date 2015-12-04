@@ -1,6 +1,7 @@
 #include "read.h"
 
 void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
+		
 		FILE* ImageFile = GetImageFile();
 	        int cluster_number = NameToClusterNumber(FILE_NAME);
 		unsigned char temp[512];
