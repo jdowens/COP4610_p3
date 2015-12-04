@@ -199,6 +199,23 @@ void RunProgram(void)
 				rmdir(parsed_dir);
 			}
 		}
+		else if (strcmp(USER_INPUT[0], "write") == 0)
+		{
+			if (strcmp(USER_INPUT[1],". . . . .") == 0 ||
+			    strcmp(USER_INPUT[2],". . . . .") == 0 ||
+			    strcmp(USER_INPUT[3],". . . . .") == 0 ||
+			    strcmp(USER_INPUT[4],". . . . .") == 0)
+			{
+				printf("Requires arguments for file name, position, number of bytes, and string to write\n"); 
+			}
+			else
+			{
+				char parsed_dir[USER_INPUT_BUFFER_LENGTH];
+				strcpy(parsed_dir, USER_INPUT[1]);
+				ToFAT32(parsed_dir);
+				write(parsed_dir, atoi(USER_INPUT[2]), atoi(USER_INPUT[3]), USER_INPUT[4]);
+			}
+		}
 		else if (strcmp(USER_INPUT[0], "debug") == 0)
 		{
 			printf("CURRENT_CLUSTER: %d\n", GetCurrentDirectoryClusterNum());
