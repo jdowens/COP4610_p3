@@ -1,17 +1,30 @@
 #include "write.h"
 
+const char* SPACE=" ";
+
 void write(const char* FILE_NAME, int POSITION, int NUM_BYTES, const char* STRING){
 	int cluster_number = NameToClusterNumber(FILE_NAME);
 	struct DirectoryEntry* directoryArray = GetDirectoryContents(GetCurrentDirectoryClusterNum());
 	int index=0;
-	unsigned int address = FindFirstSectorOfCluster(cluster_number);
-	
+	int num_spaces=0;
+
 	//if no errors get the index of the file
 	index = error_check(FILE_NAME,directoryArray,POSITION,NUM_BYTES,STRING);
-	
-	//add the number of written bytes to file size
-	update_filesize(address,directoryArray,index,NUM_BYTES,POSITION);
-	
+	unsigned int old_FileSize = directoryArray[index].DIR_FileSize;
+	unsigned int address = directoryArray[index].DIR_EntryByteAddress;
+	printf("A byte address: %x\n", FindFirstSectorOfCluster(cluster_number));
+
+	if(POSITION > directoryArray[index].DIR_FileSize){
+		num_spaces = POSITION - directoryArray[index].DIR_FileSize;
+		int spacing_index;
+                for(spacing_index=0; spacing_index < num_spaces; spacing_index++){
+                        write_at_position(0,old_FileSize+spacing_index,1,cluster_number,SPACE);
+                }//end for
+	}//end if
+
+        //add the number of written bytes to file size
+        update_filesize(address,directoryArray,index,NUM_BYTES,POSITION, num_spaces);
+
 	if(POSITION >= 512){
                 //while statement will  go the the cluster with the starting position
                 while(POSITION >= 512){
@@ -65,9 +78,9 @@ void add_cluster(int cluster_number){
 }
 
 void write_at_position(int string_position,int POSITION,int written_bytes, int cluster_number,const char* STRING){
-	FILE* ImageFile = GetImageFile();//<----is this okay????
+	FILE* ImageFile = GetImageFile();
 	fseek(ImageFile,FindFirstSectorOfCluster(cluster_number)+POSITION,SEEK_SET);
-	fwrite(&STRING[string_position],1,written_bytes,ImageFile);
+	fwrite(&STRING[string_position],sizeof(char),written_bytes,ImageFile);
 }
 
 int error_check(const char* FILE_NAME,struct DirectoryEntry* directoryArray,int POSITION,int NUM_BYTES,const char* STRING){
@@ -75,7 +88,7 @@ int error_check(const char* FILE_NAME,struct DirectoryEntry* directoryArray,int 
                 printf("Error: File not open.");
                 return;
         }//end if
-        
+
       if(FTIsOpenInWrite(FILE_NAME) == 0){
                 printf("Error: File not in write mode.");
                 return;
@@ -92,7 +105,7 @@ int error_check(const char* FILE_NAME,struct DirectoryEntry* directoryArray,int 
                         printf("Error: Did not find the file name.\n");
                         return;
         }//end if
-        
+
         //check it is not a directory
         if (strcmp(directoryArray[index].DIR_Name, FILE_NAME) == 0 && directoryArray[index].DIR_Attr & 0x10){
                 printf("Error: This is a directory.");
@@ -102,15 +115,16 @@ int error_check(const char* FILE_NAME,struct DirectoryEntry* directoryArray,int 
 	return index;
 }
 
-void update_filesize(unsigned int address,struct DirectoryEntry* directoryArray, int index, int NUM_BYTES, int POSITION){
-        if( NUM_BYTES >= directoryArray[index].DIR_FileSize && POSITION < directoryArray[index].DIR_FileSize){       
+void update_filesize(unsigned int address,struct DirectoryEntry* directoryArray, int index, int NUM_BYTES, int POSITION, int num_spaces){
+        NUM_BYTES += num_spaces;//add the number of spaces to the total
+	if( NUM_BYTES >= directoryArray[index].DIR_FileSize && POSITION < directoryArray[index].DIR_FileSize){
                 directoryArray[index].DIR_FileSize = NUM_BYTES;//add to file size
         }
-        if( (NUM_BYTES >= directoryArray[index].DIR_FileSize && POSITION > directoryArray[index].DIR_FileSize)       
+        if( (NUM_BYTES >= directoryArray[index].DIR_FileSize && POSITION > directoryArray[index].DIR_FileSize)
            || (NUM_BYTES < directoryArray[index].DIR_FileSize && POSITION > directoryArray[index].DIR_FileSize) ){
                 directoryArray[index].DIR_FileSize += NUM_BYTES;
         }
-        if(NUM_BYTES < directoryArray[index].DIR_FileSize && POSITION < directoryArray[index].DIR_FileSize){}        
+        if(NUM_BYTES < directoryArray[index].DIR_FileSize && POSITION < directoryArray[index].DIR_FileSize){}
         if(POSITION ==  directoryArray[index].DIR_FileSize){
                 directoryArray[index].DIR_FileSize = NUM_BYTES-1;
         }
@@ -129,6 +143,5 @@ void TestWrite(){
         char* string = "Nick";
 
 	write(TempFileName,POSITION,NUM_BYTES, string);
-	read(TempFileName,POSITION,NUM_BYTES);
+	read(TempFileName,0,14);
 }
-
