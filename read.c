@@ -1,12 +1,12 @@
 #include "read.h"
 
 void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
-		
+		int bytes_per_sec = GetBytesPerSec()*GetSecPerClus();
 		FILE* ImageFile = GetImageFile();
 	        int cluster_number = NameToClusterNumber(FILE_NAME);
 		unsigned char temp[512];
 		struct DirectoryEntry* directoryArray = GetDirectoryContents(GetCurrentDirectoryClusterNum());
-/*
+
 		if(FTIsOpen(FILE_NAME)==0){
 			printf("Error: File is not open.\n");
                         return;
@@ -15,7 +15,7 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
                         printf("Error: Cannot access this file.\n");
                         return;
                }
-*/
+
                 //get dir names and sizes
                 int index = 0;
                 for(index = 0; !directoryArray[index].END_OF_ARRAY; index++){
@@ -37,16 +37,16 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
 		}
 
 		else{
-				if(POSITION >= 512){
+				if(POSITION >= bytes_per_sec){
 					//while statement will  go the the cluster with the starting position
-					while(POSITION >= 512){
+					while(POSITION >= bytes_per_sec){
 	                        		cluster_number = next_cluster(cluster_number);
-	                        		POSITION = POSITION - 512;
+	                        		POSITION = POSITION - bytes_per_sec;
                 			}//end while
 				}//end if
 				//read multi sectors
-				if(POSITION+NUM_BYTES >= 512){
-					int bytes_read = 512-POSITION;
+				if(POSITION+NUM_BYTES >= bytes_per_sec){
+					int bytes_read = bytes_per_sec-POSITION;
 					//go to position in sector
                        			fseek(ImageFile,FindFirstSectorOfCluster(cluster_number)+POSITION,SEEK_SET);
 					//read to the end of sector then read from beginning of next sector
@@ -57,16 +57,16 @@ void read(const char* FILE_NAME, int POSITION, int NUM_BYTES){
                          		}//end for
 					cluster_number = next_cluster(cluster_number);
 					NUM_BYTES = NUM_BYTES - bytes_read;
-					while(cluster_number < 0x0ffffff8 && NUM_BYTES >= 512){
+					while(cluster_number < 0x0ffffff8 && NUM_BYTES >= bytes_per_sec){
 						//go to next position in sector
                                                 fseek(ImageFile,FindFirstSectorOfCluster(cluster_number),SEEK_SET);
 						//read entire sector
-                                            	fread(temp,sizeof(unsigned char),512,ImageFile); 
-                                        	for(index = 0; index < 512; index++){
+                                            	fread(temp,sizeof(unsigned char),bytes_per_sec,ImageFile);
+                                        	for(index = 0; index < bytes_per_sec; index++){
                                                 	printf("%c",temp[index]);
                                         	}//end for
 						cluster_number = next_cluster(cluster_number);
-						NUM_BYTES = NUM_BYTES - 512;
+						NUM_BYTES = NUM_BYTES - bytes_per_sec;
 					}//end while
                                         //go to next position in sector
                                        	fseek(ImageFile,FindFirstSectorOfCluster(cluster_number),SEEK_SET);
