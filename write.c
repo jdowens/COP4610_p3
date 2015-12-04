@@ -59,11 +59,16 @@ void write(const char* FILE_NAME, int POSITION, int NUM_BYTES, const char* STRIN
 			}
 			cluster_number = next_cluster(cluster_number);
 		}//end while
+
 //		if(NUM_BYTES <= 512){//filled out the last cluster chain and no more bytes
 //			 //write_at_position(bytes_write,0,512,cluster_number,STRING);//update fil
 //			return;
 //		}//end if
 //		else{//write to end of the last cluster chaiN
+//
+			//write_at_position(bytes_write,0,512,cluster_number,STRING);
+                        //bytes_write += 512;
+                        //NUM_BYTES -= 512;
 			//add nother cluster and continue to write
 			if(NUM_BYTES >=512){
 				while(NUM_BYTES >= 512){
@@ -89,7 +94,6 @@ void write(const char* FILE_NAME, int POSITION, int NUM_BYTES, const char* STRIN
 
 void add_cluster(int cluster_number){
 	int next_free_cluster = FindNextFreeCluster();//find next free cluster
-	next_free_cluster = 0x0ffffff8;//set it to end of chain
 	WriteToFAT(cluster_number,next_free_cluster);//update FAT
 	WriteToFAT(next_free_cluster,0x0ffffff8);//update FAT
 }
@@ -133,7 +137,7 @@ int error_check(const char* FILE_NAME,struct DirectoryEntry* directoryArray,int 
 }
 
 void update_filesize(unsigned int address,struct DirectoryEntry* directoryArray, int index, int NUM_BYTES, int POSITION, int num_spaces){
-        NUM_BYTES += num_spaces;//add the number of spaces to the total
+        /*NUM_BYTES += num_spaces;//add the number of spaces to the total
 	if( NUM_BYTES >= directoryArray[index].DIR_FileSize && POSITION < directoryArray[index].DIR_FileSize){
                 directoryArray[index].DIR_FileSize = NUM_BYTES;//add to file size
         }
@@ -144,10 +148,19 @@ void update_filesize(unsigned int address,struct DirectoryEntry* directoryArray,
         if(NUM_BYTES < directoryArray[index].DIR_FileSize && POSITION < directoryArray[index].DIR_FileSize){}
         if(POSITION ==  directoryArray[index].DIR_FileSize){
                 directoryArray[index].DIR_FileSize = NUM_BYTES-1;
-        }
-
-	 WriteIntToImage(directoryArray[index].DIR_FileSize,address+28);
-	 printf("New File Size: %s %d\n",directoryArray[index].DIR_Name,directoryArray[index].DIR_FileSize);
+        }*/
+	
+	// new code
+	unsigned int newSize = directoryArray[index].DIR_FileSize;
+	unsigned int currentSize = newSize;
+	if (POSITION >= currentSize)
+		newSize = POSITION + NUM_BYTES;
+	else if (POSITION+NUM_BYTES > currentSize)
+		newSize += POSITION+NUM_BYTES - currentSize;
+	 //WriteIntToImage(directoryArray[index].DIR_FileSize,address+28);
+	 //printf("New File Size: %s %d\n",directoryArray[index].DIR_Name,directoryArray[index].DIR_FileSize);
+	 WriteIntToImage(newSize, address+28);
+	 printf("New File Size: %d\n", newSize);
 }
 
 void TestWrite(){
